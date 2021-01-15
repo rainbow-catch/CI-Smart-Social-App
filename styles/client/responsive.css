@@ -1,0 +1,15 @@
+@media (max-width: 767px) {
+	.sidebar { display: none; }
+	#homepage-links { display: none; }
+	#homepage-stuff { display: none; }
+	.col-md-offset-sidebar { padding-right: 15px; }
+	#noti-menu-drop {  }
+	.notification-box-bit{ width: 100%; }
+	.feed-header-dropdown .dropdown-menu { left: -160px; }
+	.profile-header-bar ul { margin-left: 0px !important; clear: both; border-bottom: 1px solid #DDD;}
+	.profile-header-bar ul li { border: none !important; width: 33%; }
+	.profile-header-avatar { bottom: 10px !important; }
+	.profile-friend-box { text-align: center; float: none !important; }
+	.album-image-options { position: relative; }
+
+}

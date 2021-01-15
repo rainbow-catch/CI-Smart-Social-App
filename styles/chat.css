@@ -1,0 +1,30 @@
+#chat_bar { position: fixed; bottom: 5px; right: 5px;  z-index: 999999999; color: #000;}
+#chat_start { position: absolute; right: 5px; bottom: 5px;}
+.btn-round-chat { border: 1px solid #223753; color: #FFF; background: #223753; border-radius: 28px;}
+.btn-round-chat:hover span{ color: #50d8eb !important; }
+
+#chat_history_window { display: none; position: absolute; bottom: 0px; right: 5px; width: 280px; height: 320px; }
+.chat-icon { margin-left: 5px; margin-right: 5px; text-shadow: 0px 1px 0px #000; }
+.chat-top-bar { background: #223753; height: 40px; border-radius: 8px 8px 0px 0px; border: 1px solid #223753; padding: 10px; color: #FFF; font-size: 13px; }
+.chat-main-body { background: #FFF; height: 280px; border-left: 1px solid #DDD; border-right: 1px solid #DDD; border-bottom: 1px solid #DDD; }
+.chat-chat-body { background: #FFF; color: #000; height: 235px; border-left: 1px solid #DDD; border-right: 1px solid #DDD; border-bottom: 1px solid #DDD; overflow-y: scroll; }
+.chat-main-reply { background: #EEE; height: 45px; padding: 5px; border-left: 1px solid #DDD; border-right: 1px solid #DDD; border-bottom: 1px solid #DDD; }
+.chat-body-wrap { padding: 10px; }
+#chat-body-errors { font-weight: bold; font-size: 11px; }
+
+#active_chats { margin-right: 50px;  }
+.active_chat_bubble { position: relative; vertical-align: bottom; display: inline-block; cursor: pointer; border-radius: 4px; background: #223753; color: #FFF; padding: 7px; font-size: 12px; margin: 5px; }
+.active_chat_window { width: 280px; height: 320px; background: none; border: none; cursor: default; }
+.active_chat_bubble .badge-chat { position: absolute; top: -9px; left: 9px; background: #fa3c22 !important; color: #FFF; font-size: 9px !important; border-radius: 4px 4px 0px 0px; padding: 2px; }
+
+.chat-user-title { font-size: 11px; font-weight: 600; color: #0f8def; }
+.chat-messages-block { border-bottom: 1px solid #EEE; padding: 10px; margin-top: 0px !important; }
+.tiny-text { font-size: 10px; color: #bdc0bc; }
+
+#bleep { display: none; }
+.white-icon { color: #FFF; }
+
+.marginless { margin: 0px; }
+.chat-title  { border-bottom: 1px solid #EEE; padding: 10px; margin: 0px; }
+.online-users { overflow-y: scroll; height: 280px; }
+.highlight-chat:hover { background: #EEE; }

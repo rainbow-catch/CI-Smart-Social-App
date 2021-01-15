@@ -1,0 +1,8 @@
+.fc-event-container {  }
+.fc-day-grid-event { background: #318bf0; padding: 5px; cursor: pointer;}
+.fc-day-grid-event:hover { background: #2671c5; }
+.fc-day-header { padding: 5px !important; background: #EEE;}
+.fc-day:hover{
+    background: #EEEEEE;
+    cursor: pointer;
+}
