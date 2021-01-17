@@ -1,22 +1,23 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User_Settings extends CI_Controller 
+class User_Settings extends CI_Controller
 {
 
-	public function __construct() 
+	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model("user_model");
 		$this->load->model("page_model");
+		$this->load->model("ideology_model");
 
 		if(!$this->user->loggedin) $this->template->error(lang("error_1"));
-		
-		$this->template->loadData("activeLink", 
+
+		$this->template->loadData("activeLink",
 			array("settings" => array("general" => 1)));
 		$this->template->set_layout("client/themes/titan.php");
 	}
 
-	public function index() 
+	public function index()
 	{
 		$fields = $this->user_model->get_custom_fields_answers(array(
 			"edit" => 1
@@ -47,13 +48,13 @@ class User_Settings extends CI_Controller
 		);
 	}
 
-	public function pro() 
+	public function pro()
 	{
 		$this->load->model("register_model");
 		$fields = $this->user_model->get_custom_fields_answers(array(
 			"edit" => 1
 			), $this->user->info->ID);
-		
+
 		$this->load->helper('email');
 		$this->load->library("upload");
 		$email = $this->common->nohtml($this->input->post("email"));
@@ -94,9 +95,9 @@ class User_Settings extends CI_Controller
 			}
 		}
 
-		$enable_email_notification = 
+		$enable_email_notification =
 			intval($this->input->post("enable_email_notification"));
-		if($enable_email_notification > 1 || $enable_email_notification < 0) 
+		if($enable_email_notification > 1 || $enable_email_notification < 0)
 			$enable_email_notification = 0;
 
 		if ($this->settings->info->avatar_upload) {
@@ -128,7 +129,7 @@ class User_Settings extends CI_Controller
 
 				    $image = $data['file_name'];
 				} else {
-					$this->upload->initialize(array( 
+					$this->upload->initialize(array(
 				       "upload_path" => $this->settings->info->upload_path,
 				       "overwrite" => FALSE,
 				       "max_filename" => 300,
@@ -157,7 +158,7 @@ class User_Settings extends CI_Controller
 					$this->load->library('image_lib', $config);
 
 					if ( ! $this->image_lib->resize()) {
-					       $this->template->error(lang("error_21") . 
+					       $this->template->error(lang("error_21") .
 					       	$this->image_lib->display_errors());
 					}
 				}
@@ -166,7 +167,7 @@ class User_Settings extends CI_Controller
 			}
 
 			if ($_FILES['userfile_profile']['size'] > 0) {
-				$this->upload->initialize(array( 
+				$this->upload->initialize(array(
 			       "upload_path" => $this->settings->info->upload_path,
 			       "overwrite" => FALSE,
 			       "max_filename" => 300,
@@ -249,7 +250,7 @@ class User_Settings extends CI_Controller
 					$options = explode(",", $r->options);
 					if(isset($_POST['cf_radio_' . $r->ID])) {
 						$answer = intval($this->common->nohtml($this->input->post("cf_radio_" . $r->ID)));
-						
+
 						$flag = false;
 						foreach($options as $k=>$v) {
 							if($k == $answer) {
@@ -351,8 +352,8 @@ class User_Settings extends CI_Controller
 
 
 		$this->user_model->update_user($this->user->info->ID, array(
-			"email" => $email, 
-			"first_name" => $first_name, 
+			"email" => $email,
+			"first_name" => $first_name,
 			"last_name" => $last_name,
 			"email_notification" => $enable_email_notification,
 			"avatar" => $image,
@@ -385,28 +386,28 @@ class User_Settings extends CI_Controller
 					)
 				);
 			} else {
-				$this->user_model->update_custom_field($answer['fieldid'], 
+				$this->user_model->update_custom_field($answer['fieldid'],
 					$this->user->info->ID, $answer['answer']);
 			}
 		}
 
-		
+
 
 		$this->session->set_flashdata("globalmsg", lang("success_22"));
 		redirect(site_url("user_settings"));
 	}
 
 
-	public function change_password() 
+	public function change_password()
 	{
 		$this->template->loadContent("user_settings/change_password.php", array(
 			)
 		);
 	}
 
-	public function change_password_pro() 
+	public function change_password_pro()
 	{
-		$current_password = 
+		$current_password =
 			$this->common->nohtml($this->input->post("current_password"));
 		$new_pass1 = $this->common->nohtml($this->input->post("new_pass1"));
 		$new_pass2 = $this->common->nohtml($this->input->post("new_pass2"));
@@ -424,7 +425,7 @@ class User_Settings extends CI_Controller
 	    }
 
     	$pass = $this->common->encrypt($new_pass1);
-    	$this->user_model->update_user($this->user->info->ID, 
+    	$this->user_model->update_user($this->user->info->ID,
     		array("password" => $pass));
 
     	$this->session->set_flashdata("globalmsg", lang("success_23"));
@@ -432,7 +433,7 @@ class User_Settings extends CI_Controller
 	}
 
 
-	public function social_networks() 
+	public function social_networks()
 	{
 		$user_data = $this->user_model->get_user_data($this->user->info->ID);
 		if($user_data->num_rows() == 0) {
@@ -449,7 +450,7 @@ class User_Settings extends CI_Controller
 		);
 	}
 
-	public function social_networks_pro() 
+	public function social_networks_pro()
 	{
 		$twitter = $this->common->nohtml($this->input->post("twitter"));
 		$google = $this->common->nohtml($this->input->post("google"));
@@ -481,7 +482,7 @@ class User_Settings extends CI_Controller
 	}
 
 
-	public function friend_requests() 
+	public function friend_requests()
 	{
 		$requests = $this->user_model->get_friend_requests($this->user->info->ID);
 		$this->template->loadContent("user_settings/requests.php", array(
@@ -490,7 +491,7 @@ class User_Settings extends CI_Controller
 		);
 	}
 
-	public function friend_request($type, $id, $hash) 
+	public function friend_request($type, $id, $hash)
 	{
 		if($hash != $this->security->get_csrf_hash()) {
 			$this->template->error(lang("error_6"));
@@ -585,7 +586,7 @@ class User_Settings extends CI_Controller
 		redirect(site_url("user_settings/friend_requests"));
 	}
 
-	public function page_invites() 
+	public function page_invites()
 	{
 		$invites = $this->page_model->get_page_invites($this->user->info->ID);
 		$this->template->loadContent("user_settings/invites.php", array(
@@ -594,7 +595,7 @@ class User_Settings extends CI_Controller
 		);
 	}
 
-	public function delete_page_invite($id, $hash) 
+	public function delete_page_invite($id, $hash)
 	{
 		if($hash != $this->security->get_csrf_hash()) {
 			$this->template->error(lang("error_6"));
@@ -616,14 +617,14 @@ class User_Settings extends CI_Controller
 
 	}
 
-	public function privacy() 
+	public function privacy()
 	{
 		$this->template->loadContent("user_settings/privacy.php", array(
 			)
 		);
 	}
 
-	public function privacy_pro() 
+	public function privacy_pro()
 	{
 		$profile_view = intval($this->input->post("profile_view"));
 		$posts_view = intval($this->input->post("posts_view"));
@@ -647,7 +648,7 @@ class User_Settings extends CI_Controller
 		redirect(site_url("user_settings/privacy"));
 	}
 
-	public function cancel_request($id, $hash) 
+	public function cancel_request($id, $hash)
 	{
 		if($hash != $this->security->get_csrf_hash()) {
 			$this->template->error(lang("error_6"));
@@ -668,7 +669,7 @@ class User_Settings extends CI_Controller
 		redirect(site_url("user_settings"));
 	}
 
-	public function relationship_request($id, $type, $hash) 
+	public function relationship_request($id, $type, $hash)
 	{
 		if($hash != $this->security->get_csrf_hash()) {
 			$this->template->error(lang("error_6"));
@@ -709,7 +710,7 @@ class User_Settings extends CI_Controller
 		redirect(site_url("user_settings"));
 	}
 
-	public function verified() 
+	public function verified()
 	{
 		if(!$this->settings->info->enable_verified_requests) {
 			$this->template->error(lang("error_166"));
@@ -719,7 +720,7 @@ class User_Settings extends CI_Controller
 		);
 	}
 
-	public function verified_pro() 
+	public function verified_pro()
 	{
 		if(!$this->settings->info->enable_verified_requests) {
 			$this->template->error(lang("error_166"));
@@ -745,7 +746,7 @@ class User_Settings extends CI_Controller
 		redirect(site_url("user_settings/verified"));
 	}
 
-	public function deauth($hash) 
+	public function deauth($hash)
 	{
 		if($hash != $this->security->get_csrf_hash()) {
 			$this->template->error(lang("error_6"));
@@ -773,6 +774,66 @@ class User_Settings extends CI_Controller
 		$this->session->set_flashdata("globalmsg", lang("success_116"));
 		redirect(site_url("user_settings/social_networks"));
 	}
+
+	//Customize to Conspiracy
+    public function ideology()
+    {
+        $questions = $this->ideology_model->get_questions();
+        $answers = explode(",", $this->user->info->ideology_answers);
+        $data = [];
+        for($i=0; $i<count($questions); $i++){
+        	array_push($data, [
+        		'question' => $questions[$i],
+				'answer' => ($answers[$i]?? null)
+			]);
+		}
+        $this->template->loadContent("user_settings/ideology.php", array(
+            	'questions_and_answers' => $data,
+            )
+        );
+    }
+
+    public function ideology_set()
+    {
+        $count = array_count_values($this->input->post("questions"));
+		arsort($count);
+        if($this->user->info->old_ideology){
+            $this->template->error(lang("error_200"));
+            return;
+        }
+        if(array_keys($count)[0]==0)
+        	if(count(array_keys($count)) > 1)
+        		$new_ideology=array_keys($count)[1];
+        	else {
+                $this->template->error(lang("error_202"));
+                return;
+            }
+		else
+			$new_ideology = array_keys($count)[0];
+
+		if($this->user->info->ideology) {
+            if($this->user->info->ideology == $new_ideology)
+            {
+            	$this->template->error(lang("error_201"));
+                return;
+            }
+            $this->user_model->update_user($this->user->info->ID, [
+                'old_ideology' => $this->user->info->ideology,
+                'ideology' => $new_ideology,
+				'ideology_answers' => implode(", ", $this->input->post('questions'))
+            ]);
+            $this->session->set_flashdata("globalmsg", lang("success_130"));
+        }
+		else{
+			$this->user_model->update_user($this->user->info->ID, [
+				'ideology'=>$new_ideology,
+				'ideology_answers' => implode(", ", $this->input->post('questions'))
+			]);
+            $this->session->set_flashdata("globalmsg", lang("success_129"));
+        }
+
+        redirect(site_url("user_settings/ideology"));
+    }
 
 }
 

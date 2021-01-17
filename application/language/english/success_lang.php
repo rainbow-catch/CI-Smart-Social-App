@@ -143,4 +143,7 @@ $lang['success_126'] = "";
 $lang['success_127'] = "";
 $lang['success_128'] = "";
 
+//Customize to Conspiracy
+$lang['success_129'] = "Ideology settings were updated! You have only one chance to change ideology.";
+$lang['success_130'] = "Ideology settings were updated! You can't change ideology any more.";
 ?>

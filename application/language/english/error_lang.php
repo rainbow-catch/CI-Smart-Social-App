@@ -215,5 +215,9 @@ $lang['error_197'] = "";
 $lang['error_198'] = "";
 $lang['error_199'] = "";
 
+//Customize to Conspiracy
+$lang['error_200'] = "You have changed ideology already. You can't change your ideology any more.";
+$lang['error_201'] = "You have made no change to ideology.";
+$lang['error_202'] = "You must select at least one answer";
 
 ?>

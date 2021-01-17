@@ -900,4 +900,13 @@ $lang['ctn_847'] = "";
 $lang['ctn_848'] = "";
 $lang['ctn_849'] = "";
 
+//Customize to Conspiracy
+$lang['ctn_850'] = "Ideology";
+$lang['ctn_851'] = "Ideology Settings";
+$lang['ctn_852'] = "Your Ideology Settings";
+$lang['ctn_853'] = "";
+$lang['ctn_854'] = "";
+$lang['ctn_855'] = "";
+
+
 ?>
