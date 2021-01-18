@@ -779,28 +779,23 @@ class User_Settings extends CI_Controller
     public function ideology()
     {
         $questions = $this->ideology_model->get_questions();
-        $answers = explode(",", $this->user->info->ideology_answers);
-        $data = [];
-        for($i=0; $i<count($questions); $i++){
-        	array_push($data, [
-        		'question' => $questions[$i],
-				'answer' => ($answers[$i]?? null)
-			]);
-		}
+        $answers = json_decode($this->user->info->ideology_answers);
         $this->template->loadContent("user_settings/ideology.php", array(
-            	'questions_and_answers' => $data,
+            	'questions' => $questions,
+				'answers' => $answers
             )
         );
     }
 
     public function ideology_set()
     {
-        $count = array_count_values($this->input->post("questions"));
-		arsort($count);
         if($this->user->info->old_ideology){
             $this->template->error(lang("error_200"));
             return;
         }
+
+        $count = array_count_values($this->input->post("questions"));
+		arsort($count);
         if(array_keys($count)[0]==0)
         	if(count(array_keys($count)) > 1)
         		$new_ideology=array_keys($count)[1];
@@ -820,14 +815,14 @@ class User_Settings extends CI_Controller
             $this->user_model->update_user($this->user->info->ID, [
                 'old_ideology' => $this->user->info->ideology,
                 'ideology' => $new_ideology,
-				'ideology_answers' => implode(", ", $this->input->post('questions'))
+				'ideology_answers' => json_encode($this->input->post('questions'))
             ]);
             $this->session->set_flashdata("globalmsg", lang("success_130"));
         }
 		else{
 			$this->user_model->update_user($this->user->info->ID, [
 				'ideology'=>$new_ideology,
-				'ideology_answers' => implode(", ", $this->input->post('questions'))
+				'ideology_answers' => json_encode($this->input->post('questions'))
 			]);
             $this->session->set_flashdata("globalmsg", lang("success_129"));
         }

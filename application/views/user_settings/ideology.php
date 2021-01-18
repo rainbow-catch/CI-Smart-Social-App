@@ -27,17 +27,19 @@
     ?>
 </p>
 <?php echo form_open_multipart(site_url("user_settings/ideology_set"), array("class" => "form-horizontal"));
-    foreach ($questions_and_answers as $qna) {
-        $answers = explode(", ", $qna['question']['answers']); ?>
+    foreach ($questions as $q) {
+        $ID = $q["ID"];
+        $selected_answer = $answers->$ID?? null;
+        $available_answers = json_decode($q['answers']); ?>
 
 	<div class="form-group">
-	    <label for="inputEmail3" class="col-sm-4 control-label"><?php echo $qna['question']['question'] ?></label>
+	    <label for="inputEmail3" class="col-sm-4 control-label"><?php echo $q['question'] ?></label>
 	    <div class="col-sm-8">
-	      <select name="questions[]" class="form-control">
-              <option value="" <?php if(!$qna['answer']) echo "selected" ?> >- select answer -</option>
-	      	<?php for($index=0; $index<count($answers); $index++) { ?>
-              <option value="<?=$index+1?>" <?php if($qna['answer']==$index+1) echo "selected" ?> >
-                  <?=$answers[$index]?>
+	      <select name="questions[<?=$ID?>]" class="form-control">
+              <option value="" <?php if(!$selected_answer) echo "selected" ?> >- select answer -</option>
+	      	<?php foreach($available_answers as $ideology_id=>$a) { ?>
+              <option value="<?=$ideology_id?>" <?php if($selected_answer==$ideology_id) echo "selected" ?> >
+                  <?=$a?>
               </option>
 	      	<?php }?>
 	      </select>

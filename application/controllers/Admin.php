@@ -2592,10 +2592,12 @@ class Admin extends CI_Controller
 		$user_roles = $this->admin_model->get_user_roles();
 		$fields = $this->user_model->get_custom_fields_answers(array(
 			), $id);
-        $ideology_icon = "Not selcted";
         if($member->ideology){
-            $ideology_icon .= $this->common->show_ideology_icon($member->ideology);
+            $ideology_icon = $this->common->show_ideology_icon($member->ideology);
         }
+        else
+            $ideology_icon = "Not selected";
+
         if($member->old_ideology)
             $ideology_icon = $this->common->show_ideology_icon($member->old_ideology)." <i class='glyphicon glyphicon-arrow-right'></i> ".$ideology_icon;
 
