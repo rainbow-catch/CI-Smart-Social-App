@@ -1,14 +1,14 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Settings 
+class Settings
 {
 
 	var $info=array();
 
 	var $version = "1.5";
 
-	public function __construct() 
+	public function __construct()
 	{
 		$CI =& get_instance();
 		$site = $CI->db->select("site_name,site_desc,site_email,
@@ -31,10 +31,10 @@ class Settings
 			 verified_cost, enable_verified_buy, enable_verified_requests,
 			 public_profiles, public_pages, public_blogs, enable_blogs,
 			 limit_max_photos, limit_max_photos_post, enable_dislikes,
-			 google_maps_api_key, enable_google_maps")
+			 google_maps_api_key, enable_google_maps, limit_words, limit_edits")
 		->where("ID", 1)
 		->get("site_settings");
-		
+
 		if($site->num_rows() == 0) {
 			$CI->template->error(
 				"You are missing the site settings database row."

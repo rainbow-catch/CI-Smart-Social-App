@@ -8,6 +8,7 @@ class Admin extends CI_Controller
 		parent::__construct();
 		$this->load->model("admin_model");
 		$this->load->model("user_model");
+		$this->load->model("ideology_model");
 
 		if (!$this->user->loggedin) $this->template->error(lang("error_1"));
 		if(!$this->common->has_permissions(array("admin", "admin_settings",
@@ -240,11 +241,15 @@ class Admin extends CI_Controller
 		}
 		$limit_max_photos = intval($this->input->post("limit_max_photos"));
 		$limit_max_photos_post = intval($this->input->post("limit_max_photos_post"));
+		$limit_words = intval($this->input->post("limit_words"));
+		$limit_edits = intval($this->input->post("limit_edits"));
 
 		$this->admin_model->updateSettings(
 			array(
 				"limit_max_photos" => $limit_max_photos,
-				"limit_max_photos_post" => $limit_max_photos_post
+				"limit_max_photos_post" => $limit_max_photos_post,
+				"limit_words" => $limit_words,
+				"limit_edits" => $limit_edits
 			)
 		);
 		$this->session->set_flashdata("globalmsg", lang("success_13"));
@@ -3256,7 +3261,131 @@ class Admin extends CI_Controller
 		$this->session->set_flashdata("globalmsg", lang("success_13"));
 		redirect(site_url("admin/settings"));
 	}
+	public function ideologies(){
+		$ideologies = $this->ideology_model->get_ideologies();
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideologies" => 1)));
+        $this->template->loadContent("admin/ideology.php", array(
+                "ideologies" => $ideologies,
+            )
+        );
+	}
+    public function edit_ideology($id)
+    {
+        $id = intval($id);
+        $ideology = $this->ideology_model->get_ideology_by_id($id);
+        if($ideology->num_rows() == 0) {
+            $this->template->error("Invalid Ideology!");
+        }
+        $ideology = $ideology->row();
 
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideologies" => 1)));
+        $this->template->loadContent("admin/edit_ideology.php", array(
+                "ideology" => $ideology
+            )
+        );
+    }
+    public function edit_ideology_pro($id){
+        $id = intval($id);
+        $ideology = $this->ideology_model->get_ideology_by_id($id);
+        if($ideology->num_rows() == 0) {
+            $this->template->error("Invalid Ideology!");
+        }
+        $ideology = $ideology->row();
+
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideologies" => 1)));
+
+        $this->load->library("upload");
+
+        if ($_FILES['icon']['size'] > 0) {
+            $this->upload->initialize(array(
+                "upload_path" => $this->settings->info->upload_path."/icons",
+                "overwrite" => FALSE,
+                "max_filename" => 300,
+                "encrypt_name" => TRUE,
+                "remove_spaces" => TRUE,
+                "allowed_types" => $this->settings->info->file_types,
+                "max_size" => 2000,
+                "xss_clean" => TRUE
+            ));
+
+            if (!$this->upload->do_upload('icon')) {
+                $this->template->error(lang("error_21")
+                    .$this->upload->display_errors());
+            }
+
+            $data = $this->upload->data();
+			echo json_encode($data);
+            $icon = "icons/".$data['file_name'];
+        } else {
+            $icon= $ideology->icon;
+        }
+        $this->ideology_model->update_ideology($id, array(
+                "ideology" => $this->input->post("ideology"),
+				"icon" => $icon,
+                "active" => $this->input->post("active")
+            )
+        );
+
+        $this->session->set_flashdata("globalmsg", "The ideology was updated");
+        redirect(site_url("admin/ideologies"));
+	}
+	public function add_ideology_pro(){
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideologies" => 1)));
+
+        $this->load->library("upload");
+
+        if ($_FILES['icon']['size'] > 0) {
+            $this->upload->initialize(array(
+                "upload_path" => $this->settings->info->upload_path."/icons",
+                "overwrite" => FALSE,
+                "max_filename" => 300,
+                "encrypt_name" => TRUE,
+                "remove_spaces" => TRUE,
+                "allowed_types" => $this->settings->info->file_types,
+                "max_size" => 2000,
+                "xss_clean" => TRUE
+            ));
+
+            if (!$this->upload->do_upload('icon')) {
+                $this->template->error(lang("error_21")
+                    .$this->upload->display_errors());
+            }
+
+            $data = $this->upload->data();
+			echo json_encode($data);
+            $icon = "icons/".$data['file_name'];
+        } else {
+            $icon= null;
+        }
+        $this->ideology_model->add_ideology(array(
+                "ideology" => $this->input->post("ideology"),
+				"icon" => $icon,
+                "active" => $this->input->post("active")
+            )
+        );
+
+        $this->session->set_flashdata("globalmsg", "New ideology was created");
+        redirect(site_url("admin/ideologies"));
+	}
+
+	public function delete_ideology($id, $hash){
+        if($hash != $this->security->get_csrf_hash()) {
+            $this->template->error("Invalid Hash!");
+        }
+        $id = intval($id);
+        $ideology = $this->ideology_model->get_ideology_by_id($id);
+        if($ideology->num_rows() == 0) {
+            $this->template->error("Invalid Ideology");
+        }
+
+        $this->ideology_model->delete_ideology($id);
+        $this->session->set_flashdata("globalmsg", "The ideology was deleted");
+        redirect(site_url("admin/ideologies"));
+	}
 }
 
 ?>

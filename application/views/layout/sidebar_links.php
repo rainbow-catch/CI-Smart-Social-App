@@ -1,5 +1,5 @@
 <ul class="newnav nav nav-sidebar">
-           <?php if($this->user->loggedin && isset($this->user->info->user_role_id) && 
+           <?php if($this->user->loggedin && isset($this->user->info->user_role_id) &&
            ($this->user->info->admin || $this->user->info->admin_settings || $this->user->info->admin_members || $this->user->info->admin_payment)
 
            ) : ?>
@@ -21,6 +21,7 @@
                       <li class="<?php if(isset($activeLink['admin']['blogs'])) echo "active" ?>"><a href="<?php echo site_url("admin/blogs") ?>"> <?php echo lang("ctn_792") ?></a></li>
                       <li class="<?php if(isset($activeLink['admin']['blog_posts'])) echo "active" ?>"><a href="<?php echo site_url("admin/blog_posts") ?>"> <?php echo lang("ctn_793") ?></a></li>
                       <li class="<?php if(isset($activeLink['admin']['limits'])) echo "active" ?>"><a href="<?php echo site_url("admin/limits") ?>"><?php echo lang("ctn_815") ?></a></li>
+                      <li class="<?php if(isset($activeLink['admin']['ideologies'])) echo "active" ?>"><a href="<?php echo site_url("admin/ideologies") ?>">Ideologies</a></li>
                     <?php endif; ?>
                     <?php if($this->user->info->admin || $this->user->info->admin_members) : ?>
                     <li class="<?php if(isset($activeLink['admin']['members'])) echo "active" ?>"><a href="<?php echo site_url("admin/members") ?>"> <?php echo lang("ctn_160") ?></a></li>
@@ -52,6 +53,6 @@
             <li class="<?php if(isset($activeLink['home']['general'])) echo "active" ?>"><a href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-home sidebar-icon sidebar-icon-blue"></span> <?php echo lang("ctn_154") ?> <span class="sr-only">(current)</span></a></li>
             <li class="<?php if(isset($activeLink['members']['general'])) echo "active" ?>"><a href="<?php echo site_url("members") ?>"><span class="glyphicon glyphicon-user sidebar-icon sidebar-icon-green"></span> <?php echo lang("ctn_155") ?></a></li>
             <li class="<?php if(isset($activeLink['settings']['general'])) echo "active" ?>"><a href="<?php echo site_url("user_settings") ?>"><span class="glyphicon glyphicon-cog sidebar-icon sidebar-icon-pink"></span> <?php echo lang("ctn_156") ?></a></li>
-            
-      
+
+
           </ul>

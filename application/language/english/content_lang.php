@@ -904,9 +904,10 @@ $lang['ctn_849'] = "";
 $lang['ctn_850'] = "Ideology";
 $lang['ctn_851'] = "Ideology Settings";
 $lang['ctn_852'] = "Your Ideology Settings";
-$lang['ctn_853'] = "";
-$lang['ctn_854'] = "";
-$lang['ctn_855'] = "";
+$lang['ctn_853'] = "Limit of words";
+$lang['ctn_854'] = "The max amount of words that the topic can includes. Set to 0 for unlimited.";
+$lang['ctn_855'] = "Limit of edits";
+$lang['ctn_856'] = "The max number of chances that users can edit. Set to 0 for unlimited.";
 
 
 ?>

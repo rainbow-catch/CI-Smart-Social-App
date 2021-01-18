@@ -1,7 +1,7 @@
 <div class="white-area-content">
 <div class="db-header clearfix">
     <div class="page-header-title"> <span class="glyphicon glyphicon-user"></span> <?php echo lang("ctn_1") ?></div>
-    <div class="db-header-extra"> 
+    <div class="db-header-extra">
 </div>
 </div>
 
@@ -31,6 +31,20 @@
     <div class="col-sm-10">
       <input type="text" id="name-in" class="form-control" name="limit_max_photos_post" value="<?php echo $this->settings->info->limit_max_photos_post ?>">
       <span class="help-block"><?php echo lang("ctn_819") ?></span>
+    </div>
+</div>
+<div class="form-group">
+    <label for="name-in" class="col-sm-2 control-label"><?php echo lang("ctn_853") ?></label>
+    <div class="col-sm-10">
+      <input type="text" id="name-in" class="form-control" name="limit_words" value="<?php echo $this->settings->info->limit_words ?>">
+      <span class="help-block"><?php echo lang("ctn_854") ?></span>
+    </div>
+</div>
+<div class="form-group">
+    <label for="name-in" class="col-sm-2 control-label"><?php echo lang("ctn_855") ?></label>
+    <div class="col-sm-10">
+      <input type="text" id="name-in" class="form-control" name="limit_edits" value="<?php echo $this->settings->info->limit_edits ?>">
+      <span class="help-block"><?php echo lang("ctn_856") ?></span>
     </div>
 </div>
 

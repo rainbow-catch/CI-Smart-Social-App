@@ -20,4 +20,27 @@ class Ideology_Model extends CI_Model
         return $this->db->get("ideologies");
     }
 
+    public function get_ideology_by_id($id){
+        return $this->db->where('ID', $id)->get('ideologies');
+    }
+
+    public function update_ideology($id, $data){
+        $this->db->where('ID', $id)->update('ideologies', [
+            'ideology'=>$data['ideology'],
+            'icon'=>$data['icon'],
+            'active'=>$data['active'],
+        ]);
+    }
+
+    public function add_ideology($data){
+        $this->db->insert('ideologies', [
+            'ideology'=>$data['ideology'],
+            'icon'=>$data['icon'],
+            'active'=>$data['active'],
+        ]);
+    }
+
+    public function delete_ideology($id){
+        $this->db->where("ID", $id)->delete("ideologies");
+    }
 }
