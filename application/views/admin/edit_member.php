@@ -38,7 +38,7 @@
         <label for="inputEmail3" class="col-sm-3 label-heading"><?php echo lang("ctn_26") ?></label>
         <div class="col-sm-9">
         <img src="<?php echo base_url() ?>/<?php echo $this->settings->info->upload_path_relative ?>/<?php echo $member->avatar ?>" />
-            <input type="file" name="userfile" /> 
+            <input type="file" name="userfile" />
         </div>
     </div>
 <div class="form-group">
@@ -52,27 +52,27 @@
 
 <div class="form-group">
 
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_29") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_29") ?></label>
         <div class="col-md-9">
             <input type="text" class="form-control" id="name-in" name="first_name" value="<?php echo $member->first_name ?>">
         </div>
 </div>
 <div class="form-group">
 
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_30") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_30") ?></label>
         <div class="col-md-9">
             <input type="text" class="form-control" id="name-in" name="last_name" value="<?php echo $member->last_name ?>">
         </div>
 </div>
 <div class="form-group">
 
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_350") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_350") ?></label>
         <div class="col-md-9">
             <input type="text" class="form-control" id="name-in" name="credits" value="<?php echo $member->points ?>">
         </div>
 </div>
 <div class="form-group">
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_695") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_695") ?></label>
         <div class="col-md-9">
             <input type="checkbox" id="name-in" name="verified" value="1" <?php if($member->verified) echo "checked" ?>>
             <span class="help-text"><?php echo lang("ctn_696") ?></span>
@@ -123,7 +123,7 @@
     </div>
 <div class="form-group">
 
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_322") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_322") ?></label>
         <div class="col-md-9">
             <select name="user_role" class="form-control">
             <option value="0" <?php if($member->user_role == 0) echo "selected" ?>><?php echo lang("ctn_46") ?></option>
@@ -135,16 +135,17 @@
 </div>
 <div class="form-group">
 
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_36") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_36") ?></label>
         <div class="col-md-9">
             <?php echo lang("ctn_37") ?> : <?php echo $member->IP ?> <br />
             <?php echo lang("ctn_38") ?> : <?php echo date($this->settings->info->date_format, $member->joined) ?><br />
-            <?php echo lang("ctn_39") ?> : <?php echo date($this->settings->info->date_format, $member->online_timestamp) ?>
+            <?php echo lang("ctn_39") ?> : <?php echo date($this->settings->info->date_format, $member->online_timestamp) ?><br />
+            <?php echo lang("ctn_850") ?> : <?php echo html_entity_decode($ideology_icon) ?>
         </div>
 </div>
 <div class="form-group">
 
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_40") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_40") ?></label>
         <div class="col-md-9">
             <?php foreach($user_groups->result() as $r) : ?>
                 <p><a href="<?php echo site_url("admin/view_group/" . $r->groupid) ?>"><?php echo $r->name ?></a></p>
@@ -153,7 +154,7 @@
 </div>
 <div class="form-group">
 
-        <label for="name-in" class="col-md-3 label-heading"><?php echo lang("ctn_331") ?></label>
+        <label  class="col-md-3 label-heading"><?php echo lang("ctn_331") ?></label>
         <div class="col-md-9">
            <select name="active" class="form-control">
            <option value="0"><?php echo lang("ctn_332") ?></option>
@@ -164,7 +165,7 @@
 <?php foreach($fields->result() as $r) : ?>
             <div class="form-group">
 
-                <label for="name-in" class="col-md-3 label-heading"><?php echo $r->name ?> <?php if($r->required) : ?>*<?php endif; ?></label>
+                <label  class="col-md-3 label-heading"><?php echo $r->name ?> <?php if($r->required) : ?>*<?php endif; ?></label>
                 <div class="col-md-9">
                     <?php if($r->type == 0) : ?>
                         <input type="text" class="form-control" id="name-in" name="cf_<?php echo $r->ID ?>" value="<?php echo $r->value ?>">
@@ -180,7 +181,7 @@
                         <?php endif; ?>
                     <?php elseif($r->type == 3) : ?>
                         <?php $options = explode(",", $r->options); ?>
-                        
+
                         <?php if(count($options) > 0) : ?>
                             <?php foreach($options as $k=>$v) : ?>
                             <div class="form-group"><input type="radio" name="cf_radio_<?php echo $r->ID ?>" value="<?php echo $k ?>" <?php if($r->value == $v) echo "checked" ?>> <?php echo $v ?></div>

@@ -9,7 +9,7 @@
 
 <div class="white-area-content">
 <div class="db-header clearfix">
-    <div class="page-header-title"> <span class="glyphicon glyphicon-eye-open"></span> <?php echo lang("ctn_851") ?></div>
+    <div class="page-header-title"> <span class="glyphicon glyphicon-star"></span> <?php echo lang("ctn_851") ?></div>
     <div class="db-header-extra">
 </div>
 </div>

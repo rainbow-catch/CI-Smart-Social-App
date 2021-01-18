@@ -1,12 +1,12 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("PasswordHash.php");
 
-class Common 
+class Common
 {
 
-    public function nohtml($message) 
+    public function nohtml($message)
     {
         $message = trim($message);
         $message = strip_tags($message);
@@ -14,14 +14,14 @@ class Common
         return $message;
     }
 
-	public function encrypt($password) 
+	public function encrypt($password)
     {
         $phpass = new PasswordHash(12, false);
         $hash = $phpass->HashPassword($password);
     	return $hash;
     }
 
-    public function get_user_role($user) 
+    public function get_user_role($user)
     {
         if(isset($user->user_role_name)) {
             return $user->user_role_name;
@@ -30,7 +30,7 @@ class Common
         }
     }
 
-    public function randomPassword() 
+    public function randomPassword()
     {
     	$letters = array(
             "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q",
@@ -52,7 +52,7 @@ class Common
     	return $pass;
     }
 
-    public function checkAccess($level, $required) 
+    public function checkAccess($level, $required)
     {
         $CI =& get_instance();
         if($level < $required) {
@@ -64,7 +64,7 @@ class Common
         }
     }
 
-    public function send_email($subject, $body, $emailt) 
+    public function send_email($subject, $body, $emailt)
     {
         $CI =& get_instance();
         $CI->load->library('email');
@@ -78,12 +78,12 @@ class Common
         $CI->email->send();
     }
 
-    public function check_mime_type($file) 
+    public function check_mime_type($file)
     {
         return true;
     }
 
-    public function replace_keywords($array, $message) 
+    public function replace_keywords($array, $message)
     {
         foreach($array as $k=>$v) {
             $message = str_replace($k, $v, $message);
@@ -91,7 +91,7 @@ class Common
         return $message;
     }
 
-    public function convert_time($timestamp) 
+    public function convert_time($timestamp)
     {
         $time = $timestamp - time();
         if($time <=0) {
@@ -102,40 +102,40 @@ class Common
         } else {
             $days = intval($time / (3600 * 24));
             $hours = intval( ($time - ($days * (3600*24))) / 3600);
-            $mins = intval( ($time - ($days * (3600*24)) - ($hours * 3600) ) 
+            $mins = intval( ($time - ($days * (3600*24)) - ($hours * 3600) )
                     / 60);
-            $secs = intval( ($time - ($days * (3600*24)) - ($hours * 3600) 
+            $secs = intval( ($time - ($days * (3600*24)) - ($hours * 3600)
                     - ($mins * 60)) );
         }
         return array(
-            "days" => $days, 
-            "hours" => $hours, 
-            "mins" => $mins, 
+            "days" => $days,
+            "hours" => $hours,
+            "mins" => $mins,
             "secs" => $secs
         );
     }
 
-    public function get_time_string($time) 
+    public function get_time_string($time)
     {
-        if(isset($time['days']) && 
+        if(isset($time['days']) &&
             ($time['days'] > 1 || $time['days'] == 0)) {
             $days = lang("ctn_294");
         } else {
             $days = lang("ctn_295");
         }
-        if(isset($time['hours']) && 
+        if(isset($time['hours']) &&
             ($time['hours'] > 1 || $time['hours'] == 0)) {
             $hours = lang("ctn_296");
         } else {
             $hours = lang("ctn_297");
         }
-        if(isset($time['mins']) && 
+        if(isset($time['mins']) &&
             ($time['mins'] > 1 || $time['mins'] == 0)) {
             $mins = lang("ctn_298");
         } else {
             $mins = lang("ctn_299");
         }
-        if(isset($time['secs']) && 
+        if(isset($time['secs']) &&
             ($time['secs'] > 1 || $time['secs'] == 0)) {
             $secs = lang("ctn_300");
         } else {
@@ -151,7 +151,7 @@ class Common
         if(isset($time['hours'])) {
             if(!empty($timeleft)) {
                 if(!isset($time['mins'])) {
-                    $timeleft .= " ".lang("ctn_302")." " . $time['hours'] . " " 
+                    $timeleft .= " ".lang("ctn_302")." " . $time['hours'] . " "
                     . $hours;
                 } else {
                     $timeleft .= ", " . $time['hours'] . " " . $hours;
@@ -164,7 +164,7 @@ class Common
         if(isset($time['mins'])) {
             if(!empty($timeleft)) {
                 if(!isset($time['secs'])) {
-                    $timeleft .= " ".lang("ctn_302")." " . $time['mins'] . " " 
+                    $timeleft .= " ".lang("ctn_302")." " . $time['mins'] . " "
                     . $mins;
                 } else {
                     $timeleft .= ", " . $time['mins'] . " " . $mins;
@@ -176,7 +176,7 @@ class Common
 
         if(isset($time['secs'])) {
             if(!empty($timeleft)) {
-                $timeleft .= " ".lang("ctn_302")." " . $time['secs'] . " " 
+                $timeleft .= " ".lang("ctn_302")." " . $time['secs'] . " "
                 . $secs;
             } else {
                 $timeleft .= $time['secs'] . " " . $secs;
@@ -186,7 +186,7 @@ class Common
         return $timeleft;
     }
 
-    public function has_permissions($required, $user) 
+    public function has_permissions($required, $user)
     {
         if(!isset($user->info->user_role_id)) return 0;
         foreach($required as $permission) {
@@ -197,7 +197,7 @@ class Common
         return 0;
     }
 
-    public function get_user_display($data) 
+    public function get_user_display($data)
     {
         if(empty($data['username'])) return "";
         if(isset($data['online_timestamp']) > 0) {
@@ -227,28 +227,28 @@ class Common
         return $html;
     }
 
-    public function get_time_string_simple($time) 
+    public function get_time_string_simple($time)
     {
         $CI =& get_instance();
-        if(isset($time['days']) && 
+        if(isset($time['days']) &&
             ($time['days'] > 1 || $time['days'] == 0)) {
             $days = lang("ctn_294");
         } else {
             $days = lang("ctn_295");
         }
-        if(isset($time['hours']) && 
+        if(isset($time['hours']) &&
             ($time['hours'] > 1 || $time['hours'] == 0)) {
             $hours = lang("ctn_296");
         } else {
             $hours = lang("ctn_297");
         }
-        if(isset($time['mins']) && 
+        if(isset($time['mins']) &&
             ($time['mins'] > 1 || $time['mins'] == 0)) {
             $mins = lang("ctn_298");
         } else {
             $mins = lang("ctn_299");
         }
-        if(isset($time['secs']) && 
+        if(isset($time['secs']) &&
             ($time['secs'] > 1 || $time['secs'] == 0)) {
             $secs = lang("ctn_300");
         } else {
@@ -272,7 +272,7 @@ class Common
         }
     }
 
-    public function convert_simple_time($time) 
+    public function convert_simple_time($time)
     {
         $o_time = $time;
         $time = time() - $time;
@@ -284,21 +284,21 @@ class Common
         } else {
             $days = intval($time / (3600 * 24));
             $hours = intval( ($time - ($days * (3600*24))) / 3600);
-            $mins = intval( ($time - ($days * (3600*24)) - ($hours * 3600) ) 
+            $mins = intval( ($time - ($days * (3600*24)) - ($hours * 3600) )
                     / 60);
-            $secs = intval( ($time - ($days * (3600*24)) - ($hours * 3600) 
+            $secs = intval( ($time - ($days * (3600*24)) - ($hours * 3600)
                     - ($mins * 60)) );
         }
         return array(
-            "days" => $days, 
-            "hours" => $hours, 
-            "mins" => $mins, 
+            "days" => $days,
+            "hours" => $hours,
+            "mins" => $mins,
             "secs" => $secs,
             "timestamp" => $o_time
         );
     }
 
-    public function get_user_tag_usernames($content) 
+    public function get_user_tag_usernames($content)
     {
         $matches = array();
         // Looks for @[First Name Last Name](Username)
@@ -342,22 +342,22 @@ class Common
         return array("content" => $content, "users" => $users);
     }
 
-    public function get_hashtags($content) 
+    public function get_hashtags($content)
     {
         $hashtags = array();
-        $hashtag = preg_match_all("/(^|[ ])#[A-Za-z0-9_-]+/", 
+        $hashtag = preg_match_all("/(^|[ ])#[A-Za-z0-9_-]+/",
             $content, $hashtags);
         return $hashtags;
     }
 
-    public function replace_hashtags($content) 
+    public function replace_hashtags($content)
     {
-        $content = preg_replace_callback("/(^|[ ])#[A-Za-z0-9_-]+/", 
+        $content = preg_replace_callback("/(^|[ ])#[A-Za-z0-9_-]+/",
             array(&$this, "replace_hashtags_cb"), $content);
         return $content;
     }
 
-    public function replace_hashtags_cb($matches) 
+    public function replace_hashtags_cb($matches)
     {
         foreach($matches as $m) {
 
@@ -378,14 +378,14 @@ class Common
         }
     }
 
-    public function replace_user_tags($content) 
+    public function replace_user_tags($content)
     {
-        $content = preg_replace_callback("/@\[[A-Za-z ]+\]\([A-Za-z0-9_]+\)/u", 
+        $content = preg_replace_callback("/@\[[A-Za-z ]+\]\([A-Za-z0-9_]+\)/u",
             array(&$this, "replace_user_tags_cb"), $content);
         return $content;
     }
 
-    public function replace_user_tags_cb($matches) 
+    public function replace_user_tags_cb($matches)
     {
         foreach($matches as $m) {
 
@@ -403,7 +403,7 @@ class Common
             }
 
             $text = '<a href="'.site_url("profile/" . $userid[1]).'">' . $name[1] . '</a>';
-            
+
             return $text;
         }
     }
@@ -457,10 +457,10 @@ class Common
                 $str .= $date[$i];
             }
         }
-        return $str;  
+        return $str;
     }
 
-    public function check_friend($userid, $friendid) 
+    public function check_friend($userid, $friendid)
     {
         $CI =& get_instance();
         // check user is friend
@@ -482,7 +482,7 @@ class Common
         return array("friend_flag" => $friend_flag, "request_flag" => $request_flag);
     }
 
-    public function convert_smiles($text) 
+    public function convert_smiles($text)
     {
         $text = preg_replace("/(^|[ ])\:\)/", "&#x1F60A;", $text);
         $text = preg_replace("/(^|[ ])\;\)/", "&#x1F609;", $text);
@@ -517,7 +517,7 @@ class Common
         return $text;
     }
 
-    public function get_smiles() 
+    public function get_smiles()
     {
         $array = array(
             ":)" => "&#x1F60A;",
@@ -548,12 +548,12 @@ class Common
             ":weary" => "&#x1F62B;",
             ":sleepy:" => "&#x1F634;",
             ":mask:" => "&#x1F637;"
-        ); 
+        );
 
-        return $array; 
+        return $array;
     }
 
-    public function get_url_details($v) 
+    public function get_url_details($v)
     {
         $debug = 0;
         $debug_string = "";
@@ -623,7 +623,7 @@ class Common
         $title = "";
         $image = "";
         $desc = "";
-        foreach($meta as $tag) 
+        foreach($meta as $tag)
         {
             if($tag->hasAttribute('property') && $tag->getAttribute("property") == "og:title") {
                 $title = $tag->getAttribute('content');
@@ -652,10 +652,10 @@ class Common
         return array("title" => $title, "image" => $image, "description" => $desc, "url" => $v);
     }
 
-    public function convert_links($content) 
+    public function convert_links($content)
     {
-        $content = preg_replace_callback('/[a-zA-Z]+:\/\/[0-9a-zA-Z;.\/\-?:@=_#&%~,+$]+/', function($matches) { 
-                
+        $content = preg_replace_callback('/[a-zA-Z]+:\/\/[0-9a-zA-Z;.\/\-?:@=_#&%~,+$]+/', function($matches) {
+
         $CI =& get_instance();
                 // Just turn it into a hyper link
                 $v = $this->nohtml($matches[0]);
@@ -665,7 +665,16 @@ class Common
         }, $content);
         return $content;
     }
-
+    public function show_ideology_icon($ideology)
+    {
+        $CI =& get_instance();
+        $item = $CI->db->select('icon, ideology')->where("ID", $ideology)->get('ideologies')->row();
+        if($item->icon)
+            $ideology_icon_tag = "<img style='width:20px' src='".base_url().$CI->settings->info->upload_path_relative."/".$item->icon."' title='".$item->ideology."'/>";
+        else
+            $ideology_icon_tag = "<span >".$item->ideology."</span>";
+        return htmlspecialchars($ideology_icon_tag);
+    }
 }
 
 ?>

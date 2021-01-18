@@ -1,37 +1,37 @@
 <?php
 
-class User_Model extends CI_Model 
+class User_Model extends CI_Model
 {
 
-	public function getUser($email, $pass) 
+	public function getUser($email, $pass)
 	{
 		return $this->db->select("ID")
 		->where("email", $email)->where("password", $pass)->get("users");
 	}
 
-	public function get_user_by_id($userid) 
+	public function get_user_by_id($userid)
 	{
 		return $this->db->where("ID", $userid)->get("users");
 	}
 
-	public function get_user_by_username($username) 
+	public function get_user_by_username($username)
 	{
 		return $this->db->where("username", $username)->get("users");
 	}
 
-	public function delete_user($id) 
+	public function delete_user($id)
 	{
 		$this->db->where("ID", $id)->delete("users");
 	}
 
-	public function get_new_members($limit) 
+	public function get_new_members($limit)
 	{
 		return $this->db->select("email, username, joined, oauth_provider, 
 			avatar")
 		->order_by("ID", "DESC")->limit($limit)->get("users");
 	}
 
-	public function get_registered_users_date($month, $year) 
+	public function get_registered_users_date($month, $year)
 	{
 		$s= $this->db->where("joined_date", $month . "-" . $year)->select("COUNT(*) as num")->get("users");
 		$r = $s->row();
@@ -39,7 +39,7 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function get_oauth_count($provider) 
+	public function get_oauth_count($provider)
 	{
 		$s= $this->db->where("oauth_provider", $provider)->select("COUNT(*) as num")->get("users");
 		$r = $s->row();
@@ -47,7 +47,7 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function get_total_members_count() 
+	public function get_total_members_count()
 	{
 		$s= $this->db->select("COUNT(*) as num")->get("users");
 		$r = $s->row();
@@ -55,7 +55,7 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function get_active_today_count() 
+	public function get_active_today_count()
 	{
 		$s= $this->db->where("online_timestamp >", time() - 3600*24)->select("COUNT(*) as num")->get("users");
 		$r = $s->row();
@@ -63,7 +63,7 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function get_new_today_count() 
+	public function get_new_today_count()
 	{
 		$s= $this->db->where("joined >", time() - 3600*24)->select("COUNT(*) as num")->get("users");
 		$r = $s->row();
@@ -71,7 +71,7 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function get_online_count() 
+	public function get_online_count()
 	{
 		$s= $this->db->where("online_timestamp >", time() - 60*15)->select("COUNT(*) as num")->get("users");
 		$r = $s->row();
@@ -79,7 +79,7 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function get_members($datatable) 
+	public function get_members($datatable)
 	{
 		$datatable->db_order();
 
@@ -95,13 +95,13 @@ class User_Model extends CI_Model
 			users.last_name, users.ID, users.joined, users.oauth_provider,
 			users.user_role, users.online_timestamp, users.avatar,
 			user_roles.name as user_role_name")
-		->join("user_roles", "user_roles.ID = users.user_role", 
+		->join("user_roles", "user_roles.ID = users.user_role",
 				 	"left outer")
 		->limit($datatable->length, $datatable->start)
 		->get("users");
 	}
 
-	public function get_members_admin($datatable) 
+	public function get_members_admin($datatable)
 	{
 		$datatable->db_order();
 
@@ -118,73 +118,73 @@ class User_Model extends CI_Model
 			users.last_name, users.ID, users.joined, users.oauth_provider,
 			users.user_role, users.online_timestamp, users.avatar,
 			user_roles.name as user_role_name")
-		->join("user_roles", "user_roles.ID = users.user_role", 
+		->join("user_roles", "user_roles.ID = users.user_role",
 				 	"left outer")
 		->limit($datatable->length, $datatable->start)
 		->get("users");
 	}
 
-	public function get_members_by_search($search) 
+	public function get_members_by_search($search)
 	{
 		return $this->db->select("users.username, users.first_name, 
 			users.last_name, users.ID, users.joined, users.oauth_provider,
 			users.user_role, user_roles.name as user_role_name")
-		->join("user_roles", "user_roles.ID = users.user_role", 
+		->join("user_roles", "user_roles.ID = users.user_role",
 				 	"left outer")
 		->limit(20)
 		->like("users.username", $search)
 		->get("users");
 	}
 
-	public function search_by_username($search) 
+	public function search_by_username($search)
 	{
 		return $this->db->select("users.username, users.email, users.first_name, 
 			users.last_name, users.ID, users.joined, users.oauth_provider,
 			users.user_role, user_roles.name as user_role_name")
-		->join("user_roles", "user_roles.ID = users.user_role", 
+		->join("user_roles", "user_roles.ID = users.user_role",
 				 	"left outer")
 		->limit(20)
 		->like("users.username", $search)
 		->get("users");
 	}
 
-	public function search_by_email($search) 
+	public function search_by_email($search)
 	{
 		return $this->db->select("users.username, users.email, users.first_name, 
 			users.last_name, users.ID, users.joined, users.oauth_provider,
 			users.user_role, user_roles.name as user_role_name")
-		->join("user_roles", "user_roles.ID = users.user_role", 
+		->join("user_roles", "user_roles.ID = users.user_role",
 				 	"left outer")
 		->limit(20)
 		->like("users.email", $search)
 		->get("users");
 	}
 
-	public function search_by_first_name($search) 
+	public function search_by_first_name($search)
 	{
 		return $this->db->select("users.username, users.email, users.first_name, 
 			users.last_name, users.ID, users.joined, users.oauth_provider,
 			users.user_role, user_roles.name as user_role_name")
-		->join("user_roles", "user_roles.ID = users.user_role", 
+		->join("user_roles", "user_roles.ID = users.user_role",
 				 	"left outer")
 		->limit(20)
 		->like("users.first_name", $search)
 		->get("users");
 	}
 
-	public function search_by_last_name($search) 
+	public function search_by_last_name($search)
 	{
 		return $this->db->select("users.username, users.email, users.first_name, 
 			users.last_name, users.ID, users.joined, users.oauth_provider,
 			users.user_role, user_roles.name as user_role_name")
-		->join("user_roles", "user_roles.ID = users.user_role", 
+		->join("user_roles", "user_roles.ID = users.user_role",
 				 	"left outer")
 		->limit(20)
 		->like("users.last_name", $search)
 		->get("users");
 	}
 
-	public function get_notifications($userid) 
+	public function get_notifications($userid)
     {
     	return $this->db
     		->where("user_notifications.userid", $userid)
@@ -198,7 +198,7 @@ class User_Model extends CI_Model
     		->get("user_notifications");
     }
 
-    public function get_notifications_unread($userid) 
+    public function get_notifications_unread($userid)
     {
     	return $this->db
     		->where("user_notifications.userid", $userid)
@@ -213,7 +213,7 @@ class User_Model extends CI_Model
     		->get("user_notifications");
     }
 
-    public function get_notification($id, $userid) 
+    public function get_notification($id, $userid)
     {
     	return $this->db
     		->where("user_notifications.userid", $userid)
@@ -227,7 +227,7 @@ class User_Model extends CI_Model
     		->get("user_notifications");
     }
 
-    public function get_notifications_all($userid, $datatable) 
+    public function get_notifications_all($userid, $datatable)
     {
     	$datatable->db_order();
 
@@ -250,7 +250,7 @@ class User_Model extends CI_Model
     		->get("user_notifications");
     }
 
-    public function get_notifications_all_fp($userid, $page, $max=10) 
+    public function get_notifications_all_fp($userid, $page, $max=10)
     {
     	return $this->db
     		->where("user_notifications.userid", $userid)
@@ -265,7 +265,7 @@ class User_Model extends CI_Model
     		->get("user_notifications");
     }
 
-    public function get_notifications_all_total($userid) 
+    public function get_notifications_all_total($userid)
     {
     	$s = $this->db
     		->where("user_notifications.userid", $userid)
@@ -276,13 +276,13 @@ class User_Model extends CI_Model
     	return 0;
     }
 
-    public function add_notification($data) 
+    public function add_notification($data)
     {
-    	if(isset($data['email']) && isset($data['email_notification']) 
+    	if(isset($data['email']) && isset($data['email_notification'])
     		&& $data['email_notification']) {
 	    	// Send Email
 	    	$subject = $this->settings->info->site_name . lang("ctn_670");
-	    	
+
 	    	if(isset($data['username'])) {
 				$username = $data['username'] . ",";
 			} else {
@@ -320,24 +320,24 @@ class User_Model extends CI_Model
     	$this->db->insert("user_notifications", $data);
     }
 
-    public function update_notification($id, $data) 
+    public function update_notification($id, $data)
     {
     	$this->db->where("ID", $id)->update("user_notifications", $data);
     }
 
-    public function update_user_notifications($userid, $data) 
+    public function update_user_notifications($userid, $data)
     {
     	$this->db->where("userid", $userid)
     		->update("user_notifications", $data);
     }
 
-    public function increment_field($userid, $field, $amount) 
+    public function increment_field($userid, $field, $amount)
     {
     	$this->db->where("ID", $userid)
     		->set($field, $field . '+' . $amount, FALSE)->update("users");
     }
 
-    public function decrement_field($userid, $field, $amount) 
+    public function decrement_field($userid, $field, $amount)
     {
     	$this->db->where("ID", $userid)
     		->set($field, $field . '-' . $amount, FALSE)->update("users");
@@ -347,14 +347,14 @@ class User_Model extends CI_Model
 		$this->db->where("ID", $userid)->update("users", $data);
 	}
 
-	public function check_block_ip() 
+	public function check_block_ip()
 	{
 		$s = $this->db->where("IP", $_SERVER['REMOTE_ADDR'])->get("ip_block");
 		if($s->num_rows() == 0) return false;
 		return true;
 	}
 
-	public function get_user_groups($userid) 
+	public function get_user_groups($userid)
 	{
 		return $this->db->where("user_group_users.userid", $userid)
 			->select("user_groups.name,user_groups.ID as groupid,
@@ -363,7 +363,7 @@ class User_Model extends CI_Model
 			->get("user_group_users");
 	}
 
-	public function check_user_in_group($userid, $groupid) 
+	public function check_user_in_group($userid, $groupid)
 	{
 		$s = $this->db->where("userid", $userid)->where("groupid", $groupid)
 			->get("user_group_users");
@@ -371,27 +371,27 @@ class User_Model extends CI_Model
 		return 1;
 	}
 
-	public function get_default_groups() 
+	public function get_default_groups()
 	{
 		return $this->db->where("default", 1)->get("user_groups");
 	}
 
-	public function add_user_to_group($userid, $groupid) 
+	public function add_user_to_group($userid, $groupid)
 	{
 		$this->db->insert("user_group_users", array(
-			"userid" => $userid, 
+			"userid" => $userid,
 			"groupid" => $groupid
 			)
 		);
 	}
 
-	public function add_points($userid, $points) 
+	public function add_points($userid, $points)
 	{
         $this->db->where("ID", $userid)
         	->set("points", "points+$points", FALSE)->update("users");
     }
 
-    public function get_verify_user($code, $username) 
+    public function get_verify_user($code, $username)
     {
     	return $this->db
     		->where("activate_code", $code)
@@ -399,7 +399,7 @@ class User_Model extends CI_Model
     		->get("users");
     }
 
-    public function get_user_event($request) 
+    public function get_user_event($request)
     {
     	return $this->db->where("IP", $_SERVER['REMOTE_ADDR'])
     		->where("event", $request)
@@ -407,12 +407,12 @@ class User_Model extends CI_Model
     		->get("user_events");
     }
 
-    public function add_user_event($data) 
+    public function add_user_event($data)
     {
     	$this->db->insert("user_events", $data);
     }
 
-    public function get_custom_fields($data) 
+    public function get_custom_fields($data)
 	{
 		if(isset($data['register'])) {
 			$this->db->where("register", 1);
@@ -420,12 +420,12 @@ class User_Model extends CI_Model
 		return $this->db->get("custom_fields");
 	}
 
-	public function add_custom_field($data) 
+	public function add_custom_field($data)
 	{
 		$this->db->insert("user_custom_fields", $data);
 	}
 
-	public function get_custom_fields_answers($data, $userid) 
+	public function get_custom_fields_answers($data, $userid)
 	{
 		if(isset($data['edit'])) {
 			$this->db->where("custom_fields.edit", 1);
@@ -449,14 +449,14 @@ class User_Model extends CI_Model
 			->get("user_custom_fields");
 	}
 
-	public function update_custom_field($fieldid, $userid, $value) 
+	public function update_custom_field($fieldid, $userid, $value)
 	{
 		$this->db->where("fieldid", $fieldid)
 			->where("userid", $userid)
 			->update("user_custom_fields", array("value" => $value));
 	}
 
-	public function get_payment_logs($userid, $datatable) 
+	public function get_payment_logs($userid, $datatable)
 	{
 		$datatable->db_order();
 
@@ -476,7 +476,7 @@ class User_Model extends CI_Model
 			->get("payment_logs");
 	}
 
-	public function get_total_payment_logs_count($userid) 
+	public function get_total_payment_logs_count($userid)
 	{
 		$s= $this->db
 			->where("userid", $userid)
@@ -486,7 +486,7 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function get_profile_comments($userid, $page) 
+	public function get_profile_comments($userid, $page)
 	{
 		return $this->db
 			->where("profile_comments.profileid", $userid)
@@ -500,22 +500,22 @@ class User_Model extends CI_Model
 			->get("profile_comments");
 	}
 
-	public function add_profile_comment($data) 
+	public function add_profile_comment($data)
 	{
 		$this->db->insert("profile_comments", $data);
 	}
 
-	public function get_profile_comment($id) 
+	public function get_profile_comment($id)
 	{
 		return $this->db->where("ID", $id)->get("profile_comments");
 	}
 
-	public function delete_profile_comment($id) 
+	public function delete_profile_comment($id)
 	{
 		$this->db->where("ID", $id)->delete("profile_comments");
 	}
 
-	public function get_total_profile_comments($userid) 
+	public function get_total_profile_comments($userid)
 	{
 		$s = $this->db
 			->where("profile_comments.profileid", $userid)
@@ -526,32 +526,32 @@ class User_Model extends CI_Model
 		return 0;
 	}
 
-	public function increase_profile_views($userid) 
+	public function increase_profile_views($userid)
 	{
 		$this->db->where("ID", $userid)->set("profile_views", "profile_views+1", FALSE)->update("users");
 	}
 
-	public function add_user_data($data) 
+	public function add_user_data($data)
 	{
 		$this->db->insert("user_data", $data);
 	}
 
-	public function update_user_data($id, $data) 
+	public function update_user_data($id, $data)
 	{
 		$this->db->where("ID", $id)->update("user_data", $data);
 	}
 
-	public function get_user_data($userid) 
+	public function get_user_data($userid)
 	{
 		return $this->db->where("userid", $userid)->get("user_data");
 	}
 
-	public function get_user_role($roleid) 
+	public function get_user_role($roleid)
     {
     	return $this->db->where("ID", $roleid)->get("user_roles");
     }
 
-	public function get_users_with_permissions($permissions) 
+	public function get_users_with_permissions($permissions)
 	{
 
 		foreach($permissions as $p) {
@@ -565,17 +565,17 @@ class User_Model extends CI_Model
 			->get("users");
 	}
 
-	public function get_all_user_groups() 
+	public function get_all_user_groups()
 	{
 		return $this->db->get("user_groups");
 	}
 
-	public function get_user_group($id) 
+	public function get_user_group($id)
 	{
 		return $this->db->where("ID", $id)->get("user_groups");
 	}
 
-	public function get_user_friends($userid, $limit) 
+	public function get_user_friends($userid, $limit)
 	{
 		return $this->db
 			->select("users.username, users.first_name, users.last_name,
@@ -587,22 +587,22 @@ class User_Model extends CI_Model
 			->get("user_friends");
 	}
 
-	public function get_usernames($username) 
+	public function get_usernames($username)
     {
     	return $this->db->like("username", $username)->limit(10)->get("users");
     }
 
-    public function get_user_by_name($query) 
+    public function get_user_by_name($query)
     {
     	return $this->db->like("first_name", $query)->or_like("last_name", $query)->limit(10)->get("users");
     }
 
-    public function get_names($name) 
+    public function get_names($name)
     {
     	return $this->db->like("first_name", $name)->or_like("last_name", $name)->limit(10)->get("users");
     }
 
-    public function get_friend_names($name, $userid) 
+    public function get_friend_names($name, $userid)
     {
     	return $this->db
     		->where("user_friends.userid", $userid)
@@ -615,9 +615,9 @@ class User_Model extends CI_Model
     		->join("users", "users.ID = user_friends.friendid")
     		->limit(10)
     		->get("user_friends");
-    } 
+    }
 
-    public function get_user_friend($userid, $friendid) 
+    public function get_user_friend($userid, $friendid)
     {
     	return $this->db
     		->where("userid", $userid)
@@ -625,7 +625,7 @@ class User_Model extends CI_Model
     		->get("user_friends");
     }
 
-    public function check_friend_request($userid, $friendid) 
+    public function check_friend_request($userid, $friendid)
     {
     	return $this->db
     		->where("userid", $userid)
@@ -633,12 +633,12 @@ class User_Model extends CI_Model
     		->get("user_friend_requests");
     }
 
-    public function add_friend_request($data) 
+    public function add_friend_request($data)
     {
     	$this->db->insert("user_friend_requests", $data);
     }
 
-    public function get_friend_requests($userid) 
+    public function get_friend_requests($userid)
     {
     	return $this->db
     		->select("user_friend_requests.ID, user_friend_requests.timestamp,
@@ -649,7 +649,7 @@ class User_Model extends CI_Model
     		->get("user_friend_requests");
     }
 
-    public function get_friend_request($id, $userid) 
+    public function get_friend_request($id, $userid)
     {
     	return $this->db->where("user_friend_requests.ID", $id)
     		->where("user_friend_requests.friendid", $userid)
@@ -660,17 +660,17 @@ class User_Model extends CI_Model
     		->get("user_friend_requests");
     }
 
-    public function delete_friend_request($id) 
+    public function delete_friend_request($id)
     {
     	$this->db->where("ID", $id)->delete("user_friend_requests");
     }
 
-    public function add_friend($data) 
+    public function add_friend($data)
     {
     	$this->db->insert("user_friends", $data);
     }
 
-    public function get_user_friends_sample($userid) 
+    public function get_user_friends_sample($userid)
     {
     	return $this->db->where("user_friends.userid", $userid)
     		->select("users.username, users.first_name, users.last_name, users.avatar,
@@ -681,7 +681,7 @@ class User_Model extends CI_Model
     		->get("user_friends");
     }
 
-    public function get_total_friends_count($userid) 
+    public function get_total_friends_count($userid)
     {
     	$s = $this->db
     		->where("user_friends.userid", $userid)
@@ -693,7 +693,7 @@ class User_Model extends CI_Model
     	return 0;
     }
 
-    public function get_user_friends_dt($userid, $datatable) 
+    public function get_user_friends_dt($userid, $datatable)
     {
     	$datatable->db_order();
 
@@ -714,28 +714,28 @@ class User_Model extends CI_Model
 		return $datatable->get("user_friends");
     }
 
-    public function get_user_friend_id($id, $userid) 
+    public function get_user_friend_id($id, $userid)
     {
     	return $this->db->where("ID", $id)->where("userid", $userid)->get("user_friends");
     }
 
-    public function delete_friend($userid, $friendid) 
+    public function delete_friend($userid, $friendid)
     {
     	$this->db->where("userid", $userid)->where("friendid", $friendid)->delete("user_friends");
     	$this->db->where("userid", $friendid)->where("friendid", $userid)->delete("user_friends");
     }
 
-    public function add_report($data) 
+    public function add_report($data)
     {
     	$this->db->insert("reports", $data);
     }
 
-    public function add_relationship_request($data) 
+    public function add_relationship_request($data)
     {
     	$this->db->insert("relationship_requests", $data);
     }
 
-    public function get_relationship_request($userid) 
+    public function get_relationship_request($userid)
     {
     	return $this->db
     		->where("relationship_requests.friendid", $userid)
@@ -745,7 +745,7 @@ class User_Model extends CI_Model
     		->get("relationship_requests");
     }
 
-    public function get_relationship_request_invites($userid) 
+    public function get_relationship_request_invites($userid)
     {
     	return $this->db
     		->where("relationship_requests.userid", $userid)
@@ -756,56 +756,55 @@ class User_Model extends CI_Model
     		->get("relationship_requests");
     }
 
-    public function get_relationship_request_id($id) 
+    public function get_relationship_request_id($id)
     {
     	return $this->db->where("ID", $id)->get("relationship_requests");
     }
 
-    public function delete_relationship_request($id) 
+    public function delete_relationship_request($id)
     {
     	$this->db->where("ID", $id)->delete("relationship_requests");
     }
 
-    public function check_relationship_request($userid, $friendid) 
+    public function check_relationship_request($userid, $friendid)
     {
     	return $this->db->where("userid", $userid)->where("friendid", $friendid)->get("relationship_requests");
     }
 
-    public function delete_relationship_request_from_user($userid) 
+    public function delete_relationship_request_from_user($userid)
     {
     	$this->db->where("userid", $userid)->delete("relationship_requests");
     }
 
-    public function get_newest_users($userid) 
+    public function get_newest_users($userid)
     {
     	return $this->db->where("ID !=", $userid)->limit(5)->order_by("ID", "DESC")->get("users");
     }
 
-    public function increase_posts($userid) 
+    public function increase_posts($userid)
     {
     	$this->db->where("ID", $userid)->set("post_count", "post_count+1", FALSE)->update("users");
     }
 
-    public function decrease_posts($userid) 
+    public function decrease_posts($userid)
     {
     	$this->db->where("ID", $userid)->set("post_count", "post_count-1", FALSE)->update("users");
     }
 
-    public function delete_notification($id) 
+    public function delete_notification($id)
     {
     	$this->db->where("ID", $id)->delete("user_notifications");
     }
 
-    public function add_verified_request($data) 
+    public function add_verified_request($data)
     {
     	$this->db->insert("verified_requests", $data);
     }
 
-    public function get_verified_request($userid) 
+    public function get_verified_request($userid)
     {
     	return $this->db->where("userid", $userid)->get("verified_requests");
     }
-
 
 }
 
