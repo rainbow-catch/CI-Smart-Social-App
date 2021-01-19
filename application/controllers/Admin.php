@@ -3265,7 +3265,7 @@ class Admin extends CI_Controller
 		$ideologies = $this->ideology_model->get_ideologies();
         $this->template->loadData("activeLink",
             array("admin" => array("ideologies" => 1)));
-        $this->template->loadContent("admin/ideology.php", array(
+        $this->template->loadContent("admin/ideologies.php", array(
                 "ideologies" => $ideologies,
             )
         );
@@ -3385,6 +3385,97 @@ class Admin extends CI_Controller
         $this->ideology_model->delete_ideology($id);
         $this->session->set_flashdata("globalmsg", "The ideology was deleted");
         redirect(site_url("admin/ideologies"));
+	}
+
+	public function ideology_questions(){
+		$ideology_questions = $this->ideology_model->get_questions();
+		$ideologies_array = $this->ideology_model->get_ideologies()->result_array();
+		$ideologies = [];
+		foreach ($ideologies_array as $item)
+			$ideologies[$item['ID']] = $item['ideology'];
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideology_questions" => 1)));
+        $this->template->loadContent("admin/ideology_questions.php", array(
+                "questions" => $ideology_questions,
+				"ideologies" => $ideologies
+            )
+        );
+	}
+    public function edit_ideology_question($id)
+    {
+        $id = intval($id);
+        $ideology_question = $this->ideology_model->get_ideology_question_by_id($id);
+        if($ideology_question->num_rows() == 0) {
+            $this->template->error("Invalid Ideology!");
+        }
+        $ideology_question = $ideology_question->row();
+        $ideologies = [];
+
+        $ideologies_array = $this->ideology_model->get_ideologies()->result_array();
+        foreach ($ideologies_array as $item)
+            $ideologies[$item['ID']] = $item['ideology'];
+
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideology_questions" => 1)));
+        $this->template->loadContent("admin/edit_ideology_question.php", array(
+                "question" => $ideology_question,
+                "ideologies" => $ideologies
+            )
+        );
+    }
+    public function edit_ideology_question_pro($id){
+        $id = intval($id);
+        $ideology_question = $this->ideology_model->get_ideology_question_by_id($id);
+        if($ideology_question->num_rows() == 0) {
+            $this->template->error("Invalid Ideology Question!");
+        }
+
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideology_questions" => 1)));
+
+        $non_empty_answers = array_filter($this->input->post("answers"), function($a) {return $a !== "";});
+        $this->ideology_model->update_ideology_question($id, array(
+                "question" => $this->input->post("question"),
+                "answers" => json_encode($non_empty_answers),
+                "active" => $this->input->post("active")
+            )
+        );
+
+        $this->session->set_flashdata("globalmsg", "The ideology question was updated");
+        redirect(site_url("admin/ideology_questions"));
+	}
+	public function add_ideology_question_pro(){
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideology_questions" => 1)));
+
+        $non_empty_answers = array_filter($this->input->post("answers"), function($a) {return $a !== "";});
+        $this->ideology_model->add_ideology_question(array(
+                "question" => $this->input->post("question"),
+				"answers" => json_encode($non_empty_answers),
+                "active" => $this->input->post("active")
+            )
+        );
+
+        $this->session->set_flashdata("globalmsg", "New ideology question was created");
+        redirect(site_url("admin/ideology_questions"));
+	}
+
+	public function delete_ideology_question($id, $hash){
+        if($hash != $this->security->get_csrf_hash()) {
+            $this->template->error("Invalid Hash!");
+        }
+        $id = intval($id);
+        //validate
+		if(count($this->user_model->get_users_by_ideology($id)->result_array()) + count($this->user_model->get_users_by_old_ideology($id)->result_array()))
+            $this->template->error("Can't delete this ideology. Someone belongs to this ideology!");;
+        $ideology_question = $this->ideology_model->get_ideology_question_by_id($id);
+        if($ideology_question->num_rows() == 0) {
+            $this->template->error("Invalid Ideology");
+        }
+
+        $this->ideology_model->delete_ideology_question($id);
+        $this->session->set_flashdata("globalmsg", "The ideology_question was deleted");
+        redirect(site_url("admin/ideology_questions"));
 	}
 }
 

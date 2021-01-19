@@ -806,6 +806,15 @@ class User_Model extends CI_Model
     	return $this->db->where("userid", $userid)->get("verified_requests");
     }
 
+    //Customize to Conspiracy app
+	public function get_users_by_ideology($id)
+	{
+		return $this->db->where('ideology', $id)->get('users');
+	}
+	public function get_users_by_old_ideology($id)
+	{
+		return $this->db->where('old_ideology', $id)->get('users');
+	}
 }
 
 ?>
