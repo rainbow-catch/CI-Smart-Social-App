@@ -23,6 +23,7 @@
                       <li class="<?php if(isset($activeLink['admin']['limits'])) echo "active" ?>"><a href="<?php echo site_url("admin/limits") ?>"><?php echo lang("ctn_815") ?></a></li>
                       <li class="<?php if(isset($activeLink['admin']['ideologies'])) echo "active" ?>"><a href="<?php echo site_url("admin/ideologies") ?>">Ideologies</a></li>
                       <li class="<?php if(isset($activeLink['admin']['ideology_questions'])) echo "active" ?>"><a href="<?php echo site_url("admin/ideology_questions") ?>">Ideology Questions</a></li>
+                      <li class="<?php if(isset($activeLink['admin']['security_questions'])) echo "active" ?>"><a href="<?php echo site_url("admin/security_questions") ?>">Security Questions</a></li>
                     <?php endif; ?>
                     <?php if($this->user->info->admin || $this->user->info->admin_members) : ?>
                     <li class="<?php if(isset($activeLink['admin']['members'])) echo "active" ?>"><a href="<?php echo site_url("admin/members") ?>"> <?php echo lang("ctn_160") ?></a></li>

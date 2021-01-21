@@ -9,36 +9,32 @@
 <script src="<?php echo base_url();?>scripts/libraries/sortable/Sortable.min.js"></script>
 <div class="white-area-content">
     <div class="db-header clearfix">
-        <div class="page-header-title"> <span class="glyphicon glyphicon-star"></span> <?php echo lang("ctn_1") ?></div>
-        <div class="db-header-extra"><input type="button" class="btn btn-primary btn-sm" value="Add Ideology" data-toggle="modal" data-target="#memberModal" />
+        <div class="page-header-title"> <span class="glyphicon glyphicon-question-sign"></span> <?php echo lang("ctn_1") ?></div>
+        <div class="db-header-extra"><input type="button" class="btn btn-primary btn-sm" value="Add Security Question" data-toggle="modal" data-target="#memberModal" />
         </div>
     </div>
 
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url() ?>"><?php echo lang("ctn_2") ?></a></li>
         <li><a href="<?php echo site_url("admin") ?>"><?php echo lang("ctn_1") ?></a></li>
-        <li class="active">Ideologies</li>
+        <li class="active">Security Questions</li>
     </ol>
 
     <p>With Ideologies, you can easily classify other users.</p>
 
     <table class="table table-bordered">
-        <tr class="table-header"><td>Ideology Name</td><td>Icon</td><td>Active</td><td>Options</td></tr>
-        <?php foreach($ideologies->result() as $r) { ?>
-            <tr><td><?php echo $r->ideology ?></td>
-                <td>
-                    <?php if($r->icon) {?>
-                    <img style="width:20px" src="<?=base_url().$this->settings->info->upload_path_relative."/".$r->icon?>" title="<?=$r->ideology?>" alt="something">
-                    <?php } else echo "Not selected";?>
-                </td>
+        <tr class="table-header"><td>Security Question</td><td>Active</td><td>Options</td></tr>
+        <?php foreach($questions->result() as $r) { ?>
+            <tr>
+                <td><?php echo $r->question ?></td>
                 <td>
                     <span><?=$r->active?"Active":"Inactive"?></span>
                 </td>
                 <td>
-                    <a href="<?php echo site_url("admin/edit_ideology/" . $r->ID) ?>" class="btn btn-warning btn-xs" title="<?php echo lang("ctn_55") ?>">
+                    <a href="<?php echo site_url("admin/edit_security_question/" . $r->ID) ?>" class="btn btn-warning btn-xs" title="<?php echo lang("ctn_55") ?>">
                         <span class="glyphicon glyphicon-cog"></span>
                     </a>
-                    <a href="<?php echo site_url("admin/delete_ideology/" . $r->ID . "/" . $this->security->get_csrf_hash()) ?>" class="btn btn-danger btn-xs" onclick="return confirm('<?php echo lang("ctn_317") ?>')" title="<?php echo lang("ctn_57") ?>">
+                    <a href="<?php echo site_url("admin/delete_security_question/" . $r->ID . "/" . $this->security->get_csrf_hash()) ?>" class="btn btn-danger btn-xs" onclick="return confirm('<?php echo lang("ctn_317") ?>')" title="<?php echo lang("ctn_57") ?>">
                         <span class="glyphicon glyphicon-trash"></span>
                     </a>
                 </td></tr>
@@ -54,18 +50,12 @@
                 </div>
                 <div class="modal-body">
 
-                    <?php echo form_open_multipart(site_url("admin/add_ideology_pro"), array("class" => "form-horizontal", "id" => "ideologies")) ?>
+                    <?php echo form_open_multipart(site_url("admin/add_security_question_pro"), array("class" => "form-horizontal", "id" => "ideologies")) ?>
 
                     <div class="form-group">
-                        <label for="email-in" class="col-md-3 label-heading">Ideology Name</label>
+                        <label for="email-in" class="col-md-3 label-heading">Question</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="email-in" name="ideology" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="icon" class="col-md-3 label-heading">Ideology Name</label>
-                        <div class="col-md-9">
-                            <input type="file" class="form-control" id="icon" name="icon">
+                            <input type="text" class="form-control" id="email-in" name="question" maxlength="100" required>
                         </div>
                     </div>
                     <div class="form-group">

@@ -12,20 +12,12 @@
 
  <div class="panel panel-default">
                 <div class="panel-body">
- <?php echo form_open_multipart(site_url("admin/edit_ideology_pro/" . $ideology->ID), array("class" => "form-horizontal")) ?>
+ <?php echo form_open_multipart(site_url("admin/edit_security_question_pro/" . $question->ID), array("class" => "form-horizontal")) ?>
                     <div class="form-group">
-                        <label for="email-in" class="col-md-3 label-heading">Ideology</label>
+                        <label for="email-in" class="col-md-3 label-heading">Question</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" id="email-in" name="ideology" value="<?php echo $ideology->ideology ?>" required>
-                            <span class="help-block">Here, please type name of ideology.</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email-in" class="col-md-3 label-heading">Icon</label>
-                        <div class="col-md-9">
-                            <input type="file" class="form-control" id="email-in" name="icon" value="<?php echo $ideology->ideology ?>">
-                            <span class="help-block">Here, you can set ideology icon.</span>
+                            <input type="text" class="form-control" id="email-in" name="question" value="<?php echo $question->question ?>" maxlength="100" required>
+                            <span class="help-block">Here, please type security question.</span>
                         </div>
                     </div>
 
@@ -33,8 +25,8 @@
                         <label for="email-in" class="col-md-3 label-heading">Active</label>
                         <div class="col-md-9">
                             <select class="form-control" name="active">
-                                <option value="1" <?php echo !$ideology->active? "":"selected"?>>Active</option>
-                                <option value="0" <?php echo $ideology->active? "":"selected"?>>Inactive</option>
+                                <option value="1" <?php echo !$question->active? "":"selected"?>>Active</option>
+                                <option value="0" <?php echo $question->active? "":"selected"?>>Inactive</option>
                             </select>
                             <span class="help-block">Active/Disable</span>
                         </div>

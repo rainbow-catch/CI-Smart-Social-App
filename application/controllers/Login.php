@@ -5,10 +5,10 @@ require_once APPPATH . 'third_party/Google/autoload.php';
 require APPPATH . "third_party/twitter/autoload.php";
 use Abraham\TwitterOAuth\TwitterOAuth;
 
-class Login extends CI_Controller 
+class Login extends CI_Controller
 {
 
-	public function __construct() 
+	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model("login_model");
@@ -31,7 +31,7 @@ class Login extends CI_Controller
 		$this->template->loadContent("login/index.php", array());
 	}
 
-	public function ajax_check_login() 
+	public function ajax_check_login()
 	{
 		$formData = $this->input->post("formData");
 		parse_str($formData, $data);
@@ -59,7 +59,7 @@ class Login extends CI_Controller
 
 		if($this->settings->info->login_protect) {
 			// Check user for 5 login attempts
-			$s = $this->login_model->get_login_attempts($_SERVER['REMOTE_ADDR'], 
+			$s = $this->login_model->get_login_attempts($_SERVER['REMOTE_ADDR'],
 							$email, (15*60));
 			if($s->num_rows() > 0) {
 				$s = $s->row();
@@ -87,7 +87,7 @@ class Login extends CI_Controller
     		$this->template->jsonError(lang("error_29"));
     	}
 
-    	if($this->settings->info->activate_account) 
+    	if($this->settings->info->activate_account)
     	{
     		if(!$r->active) {
     			$this->template->jsonError(lang("error_72") . "<a href='".
@@ -105,8 +105,8 @@ class Login extends CI_Controller
 		exit();
 	}
 
-	public function pro($redirect="") 
-	{	
+	public function pro($redirect="")
+	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
 		if ($this->user_model->check_block_ip()) {
@@ -117,14 +117,14 @@ class Login extends CI_Controller
 		if ($this->user->loggedin) {
 			$this->template->error(lang("error_27"));
 		}
-		
+
 		$email = $this->input->post("email", true);
 		$pass = $this->common->nohtml($this->input->post("pass", true));
 		$remember = $this->input->post("remember", true);
 
 		if($this->settings->info->login_protect) {
 			// Check user for 5 login attempts
-			$s = $this->login_model->get_login_attempts($_SERVER['REMOTE_ADDR'], 
+			$s = $this->login_model->get_login_attempts($_SERVER['REMOTE_ADDR'],
 							$email, (15*60));
 			if($s->num_rows() > 0) {
 				$s = $s->row();
@@ -156,7 +156,7 @@ class Login extends CI_Controller
     		$this->template->error(lang("error_29"));
     	}
 
-    	if($this->settings->info->activate_account) 
+    	if($this->settings->info->activate_account)
     	{
     		if(!$r->active) {
     			$this->template->error(lang("error_72") . "<a href='".
@@ -204,6 +204,7 @@ class Login extends CI_Controller
 
 		setcookie($config . "un", $email, time()+$ttl, "/");
 		setcookie($config . "tkn", $token, time()+$ttl, "/");
+        $this->user->reset_security_answered();
 
 		if(!empty($redirect)) {
 			redirect(site_url(urldecode($redirect)));
@@ -212,12 +213,12 @@ class Login extends CI_Controller
 		}
 	}
 
-	private function login_protect($email) 
+	private function login_protect($email)
 	{
 		if($this->settings->info->login_protect) {
 			// Add Count
 			$s = $this->login_model
-				->get_login_attempts($_SERVER['REMOTE_ADDR'], 
+				->get_login_attempts($_SERVER['REMOTE_ADDR'],
 					$email, (15*60));
 			if($s->num_rows() > 0) {
 				$s = $s->row();
@@ -237,7 +238,7 @@ class Login extends CI_Controller
 		}
 	}
 
-	public function google_login() 
+	public function google_login()
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
@@ -249,7 +250,7 @@ class Login extends CI_Controller
 		}
 
 		// Get Keys
-		if(empty($this->settings->info->google_client_id) || 
+		if(empty($this->settings->info->google_client_id) ||
 			empty($this->settings->info->google_client_secret)) {
 			$this->template->error(lang("error_31"));
 		}
@@ -261,13 +262,13 @@ class Login extends CI_Controller
 		$client->setRedirectUri(site_url("login/google_login"));
 		$client->setScopes(array(
 			'https://www.googleapis.com/auth/plus.login',
-			'https://www.googleapis.com/auth/plus.me', 
-			'https://www.googleapis.com/auth/userinfo.email', 
+			'https://www.googleapis.com/auth/plus.me',
+			'https://www.googleapis.com/auth/userinfo.email',
 			'https://www.googleapis.com/auth/userinfo.profile'
 			)
 		);
 
-		
+
 		$oauth2 = new Google_Auth_OAuth2($client);
 		$plus = new Google_Service_Plus($client);
 
@@ -318,7 +319,7 @@ class Login extends CI_Controller
 		    	$this->login_model
 		    	->update_google_user($provider, $oauth_id, $token);
 		    }
-		    
+
 		    // Set Cookies
 			$ttl = 3600*24*31;
 
@@ -337,7 +338,7 @@ class Login extends CI_Controller
 		}
 	}
 
-	public function facebook_login() 
+	public function facebook_login()
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
@@ -349,7 +350,7 @@ class Login extends CI_Controller
 		}
 
 		// Get Keys
-		if(empty($this->settings->info->facebook_app_id) || 
+		if(empty($this->settings->info->facebook_app_id) ||
 			empty($this->settings->info->facebook_app_secret)) {
 			$this->template->error(lang("error_33"));
 		}
@@ -367,7 +368,7 @@ class Login extends CI_Controller
 		redirect($loginUrl);
 	}
 
-	public function facebook_login_pro() 
+	public function facebook_login_pro()
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
@@ -379,7 +380,7 @@ class Login extends CI_Controller
 		}
 
 		// Get Keys
-		if(empty($this->settings->info->facebook_app_id) || 
+		if(empty($this->settings->info->facebook_app_id) ||
 			empty($this->settings->info->facebook_app_secret)) {
 			$this->template->error(lang("error_33"));
 		}
@@ -472,7 +473,7 @@ class Login extends CI_Controller
 		}
 	}
 
-	public function twitter_login() 
+	public function twitter_login()
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
@@ -484,7 +485,7 @@ class Login extends CI_Controller
 		}
 
 		// Get Keys
-		if(empty($this->settings->info->twitter_consumer_key) || 
+		if(empty($this->settings->info->twitter_consumer_key) ||
 			empty($this->settings->info->twitter_consumer_secret)) {
 			$this->template->error(lang("error_35"));
 		}
@@ -494,7 +495,7 @@ class Login extends CI_Controller
 			$this->settings->info->twitter_consumer_secret);
 
 		// We redirect the user to this url once we have our tokens
-		$request_token = $twitteroauth->oauth("oauth/request_token", 
+		$request_token = $twitteroauth->oauth("oauth/request_token",
 			array("oauth_callback" => site_url("login/twitter_login_pro")));
 
 		// On Success
@@ -503,7 +504,7 @@ class Login extends CI_Controller
 			$_SESSION['oauth_token'] = $request_token['oauth_token'];
 			$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 			if($request_token['oauth_callback_confirmed']) {
-		 		$url = $twitteroauth->url("oauth/authenticate", 
+		 		$url = $twitteroauth->url("oauth/authenticate",
 		 			array("oauth_token" => $request_token['oauth_token']));
 		 		redirect($url);
 		 	} else {
@@ -515,7 +516,7 @@ class Login extends CI_Controller
 		}
 	}
 
-	public function twitter_login_pro() 
+	public function twitter_login_pro()
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
@@ -525,9 +526,9 @@ class Login extends CI_Controller
 		if ($this->user->loggedin) {
 			$this->template->error(lang("error_27"));
 		}
-		
+
 		// Get Keys
-		if(empty($this->settings->info->twitter_consumer_key) || 
+		if(empty($this->settings->info->twitter_consumer_key) ||
 			empty($this->settings->info->twitter_consumer_secret)) {
 			$this->template->error(lang("error_35"));
 		}
@@ -549,23 +550,23 @@ class Login extends CI_Controller
 				$_SESSION['oauth_token_secret']
 			);
 
-		    $access_token = $twitteroauth->oauth("oauth/access_token", 
+		    $access_token = $twitteroauth->oauth("oauth/access_token",
 		    	array("oauth_verifier" => $_GET['oauth_verifier']));
 		    if($twitteroauth->getLastHttpCode() != 200) {
 		    	$errors = "";
 		    	foreach($access_token->errors as $error) {
 					$errors .= $error->message . "<br /><br />";
 				}
-				$this->template->error(lang("error_39") . "<br /><br />" 
+				$this->template->error(lang("error_39") . "<br /><br />"
 					. $errors);
 		    }
 
 			// Getting Twitter user data
 			// Use Access Token to get data
 			$connection = new TwitterOAuth(
-				$this->settings->info->twitter_consumer_key, 
+				$this->settings->info->twitter_consumer_key,
 				$this->settings->info->twitter_consumer_secret,
-				$access_token['oauth_token'], 
+				$access_token['oauth_token'],
 				$access_token['oauth_token_secret']);
 			$user_info = $connection->get('account/verify_credentials');
 
@@ -584,9 +585,9 @@ class Login extends CI_Controller
 
 			$oauth_id = $this->common->nohtml($user_info->id);
 			$name = $this->common->nohtml($user_info->screen_name);
-			$access_token['oauth_token'] = 
+			$access_token['oauth_token'] =
 				$this->common->nohtml($access_token['oauth_token']);
-			$access_token['oauth_token_secret'] = 
+			$access_token['oauth_token_secret'] =
 				$this->common->nohtml($access_token['oauth_token_secret']);
 
 			if ($user->num_rows() == 0) {
@@ -602,7 +603,7 @@ class Login extends CI_Controller
 		    		"user_role" => $this->settings->info->default_user_role
 		    		)
 		    	);
-				
+
 
 				// Check for any default user groups
 				$default_groups = $this->user_model->get_default_groups();
@@ -637,10 +638,12 @@ class Login extends CI_Controller
 		}
 	}
 
-	public function logout($hash) 
+	public function logout($hash)
 	{
 		$this->template->set_error_view("error/login_error.php");
-		$config = $this->config->item("cookieprefix");
+        $this->user->reset_security_answered();
+
+        $config = $this->config->item("cookieprefix");
 		$this->load->helper("cookie");
 		if ($hash != $this->security->get_csrf_hash() ) {
 			$this->template->error(lang("error_6"));
@@ -655,7 +658,7 @@ class Login extends CI_Controller
 		redirect(base_url());
 	}
 
-	public function resetpw($token,$userid) 
+	public function resetpw($token,$userid)
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
@@ -671,7 +674,7 @@ class Login extends CI_Controller
 			$this->template->error(lang("error_43"));
 		}
 
-		$this->template->loadContent("login/resetpw.php", 
+		$this->template->loadContent("login/resetpw.php",
 			array(
 				"token" => $token,
 				 "userid" => $userid
@@ -680,7 +683,7 @@ class Login extends CI_Controller
 
 	}
 
-	public function resetpw_pro($token, $userid) 
+	public function resetpw_pro($token, $userid)
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
@@ -718,15 +721,15 @@ class Login extends CI_Controller
 		redirect(site_url("login"));
 	}
 
-	public function forgotpw() 
+	public function forgotpw()
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");
 		$this->template->loadContent("login/forgotpw.php", array());
 	}
 
-	public function forgotpw_pro() 
-	{	
+	public function forgotpw_pro()
+	{
 		$this->template->set_layout("layout/login_layout.php");
 		$this->template->set_error_view("error/login_error.php");
 		$email = $this->input->post("email", true);
@@ -777,7 +780,7 @@ class Login extends CI_Controller
 		$email_template->message = $this->common->replace_keywords(array(
 			"[NAME]" => $user->username,
 			"[SITE_URL]" => site_url(),
-			"[EMAIL_LINK]" => 
+			"[EMAIL_LINK]" =>
 				site_url("login/resetpw/" . $token . "/" . $user->ID),
 			"[SITE_NAME]" =>  $this->settings->info->site_name
 			),
@@ -790,7 +793,7 @@ class Login extends CI_Controller
 		redirect(site_url("login/forgotpw"));
 	}
 
-	public function banned() 
+	public function banned()
 	{
 		$this->template->set_error_view("error/login_error.php");
 		$this->template->set_layout("layout/login_layout.php");

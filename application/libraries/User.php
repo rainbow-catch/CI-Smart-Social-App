@@ -43,6 +43,8 @@ class User
 				users.verified,
 				users.ideology,
 				users.old_ideology,
+				users.security_question_id,
+				users.security_answer,
 				ideologies.ideology as ideology_name,
 				old_ideologies.ideology as old_ideology_name,
 				users.ideology_answers,
@@ -158,6 +160,19 @@ class User
 		);
 	}
 
+
+    public function reset_security_answered($val=0){
+        $CI =& get_instance();
+        $CI->db->where("ID", $this->info->ID)->update("users", array(
+                "security_answered" => $val
+            )
+        );
+    }
+
+    public function check_if_answered(){
+        $CI =& get_instance();
+        return $CI->db->select('security_answered')->where("ID", $this->info->ID)->get('users');
+    }
 }
 
 ?>

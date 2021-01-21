@@ -9,9 +9,11 @@ class User_Settings extends CI_Controller
 		$this->load->model("user_model");
 		$this->load->model("page_model");
 		$this->load->model("ideology_model");
+		$this->load->model("security_model");
 
 		if(!$this->user->loggedin) $this->template->error(lang("error_1"));
-
+		if(!$this->user->check_if_answered()->row()->security_answered)
+            redirect(site_url("security_question"));
 		$this->template->loadData("activeLink",
 			array("settings" => array("general" => 1)));
 		$this->template->set_layout("client/themes/titan.php");
@@ -830,6 +832,28 @@ class User_Settings extends CI_Controller
         redirect(site_url("user_settings/ideology"));
     }
 
+    public function change_security_question()
+    {
+    	$questions = $this->security_model->get_questions();
+        $this->template->loadContent("user_settings/change_security_question.php", array(
+        	"questions" => $questions
+            )
+        );
+    }
+
+    public function change_security_question_pro()
+    {
+        $question_id = $this->input->post("question");
+        $answer = $this->input->post("answer");
+
+        if(!$question_id || !$answer) $this->template->error("Input security question and answer again. Invalid data.");
+
+        $this->user_model->update_user($this->user->info->ID,
+            array("security_question_id" => $question_id, "security_answer" => $answer));
+
+        $this->session->set_flashdata("globalmsg", "Your security option was updated");
+        redirect(site_url("user_settings/change_security_question"));
+    }
 }
 
 ?>

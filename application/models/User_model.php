@@ -815,6 +815,10 @@ class User_Model extends CI_Model
 	{
 		return $this->db->where('old_ideology', $id)->get('users');
 	}
+	public function get_users_by_security_question($id)
+	{
+		return $this->db->where('security_question_id', $id)->get('users');
+	}
 }
 
 ?>

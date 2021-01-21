@@ -665,6 +665,7 @@ class Common
         }, $content);
         return $content;
     }
+
     public function show_ideology_icon($ideology)
     {
         $CI =& get_instance();

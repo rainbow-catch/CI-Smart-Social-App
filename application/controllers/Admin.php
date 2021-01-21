@@ -9,6 +9,7 @@ class Admin extends CI_Controller
 		$this->load->model("admin_model");
 		$this->load->model("user_model");
 		$this->load->model("ideology_model");
+		$this->load->model("security_model");
 
 		if (!$this->user->loggedin) $this->template->error(lang("error_1"));
 		if(!$this->common->has_permissions(array("admin", "admin_settings",
@@ -3377,6 +3378,8 @@ class Admin extends CI_Controller
             $this->template->error("Invalid Hash!");
         }
         $id = intval($id);
+        if(count($this->user_model->get_users_by_ideology($id)->result_array()) + count($this->user_model->get_users_by_old_ideology($id)->result_array()))
+            $this->template->error("Can't delete this ideology. Someone belongs to this ideology!");;
         $ideology = $this->ideology_model->get_ideology_by_id($id);
         if($ideology->num_rows() == 0) {
             $this->template->error("Invalid Ideology");
@@ -3466,9 +3469,7 @@ class Admin extends CI_Controller
         }
         $id = intval($id);
         //validate
-		if(count($this->user_model->get_users_by_ideology($id)->result_array()) + count($this->user_model->get_users_by_old_ideology($id)->result_array()))
-            $this->template->error("Can't delete this ideology. Someone belongs to this ideology!");;
-        $ideology_question = $this->ideology_model->get_ideology_question_by_id($id);
+		$ideology_question = $this->ideology_model->get_ideology_question_by_id($id);
         if($ideology_question->num_rows() == 0) {
             $this->template->error("Invalid Ideology");
         }
@@ -3477,6 +3478,81 @@ class Admin extends CI_Controller
         $this->session->set_flashdata("globalmsg", "The ideology_question was deleted");
         redirect(site_url("admin/ideology_questions"));
 	}
+    public function security_questions(){
+        $questions = $this->security_model->get_questions();
+        $this->template->loadData("activeLink",
+            array("admin" => array("security_questions" => 1)));
+        $this->template->loadContent("admin/security_questions.php", array(
+                "questions" => $questions,
+            )
+        );
+    }
+    public function edit_security_question($id)
+    {
+        $id = intval($id);
+        $question = $this->security_model->get_question_by_id($id);
+        if($question->num_rows() == 0) {
+            $this->template->error("Invalid question!");
+        }
+        $question = $question->row();
+
+        $this->template->loadData("activeLink",
+            array("admin" => array("security_questions" => 1)));
+        $this->template->loadContent("admin/edit_security_question.php", array(
+                "question" => $question
+            )
+        );
+    }
+    public function edit_security_question_pro($id){
+        $id = intval($id);
+        $question = $this->security_model->get_question_by_id($id);
+        if($question->num_rows() == 0) {
+            $this->template->error("Invalid question!");
+        }
+
+        $this->template->loadData("activeLink",
+            array("admin" => array("ideologies" => 1)));
+
+        $this->security_model->update_question($id, array(
+                "question" => $this->input->post("question"),
+                "active" => $this->input->post("active")
+            )
+        );
+
+        $this->session->set_flashdata("globalmsg", "The security question was updated");
+        redirect(site_url("admin/security_questions"));
+    }
+    public function add_security_question_pro(){
+        $this->template->loadData("activeLink",
+            array("admin" => array("security_questions" => 1)));
+
+        $this->security_model->add_question(array(
+                "question" => $this->input->post("question"),
+                "active" => $this->input->post("active")
+            )
+        );
+
+        $this->session->set_flashdata("globalmsg", "New security question was created");
+        redirect(site_url("admin/security_questions"));
+    }
+
+    public function delete_security_question($id, $hash){
+        if($hash != $this->security->get_csrf_hash()) {
+            $this->template->error("Invalid Hash!");
+        }
+        $id = intval($id);
+        if(count($this->user_model->get_users_by_security_question($id)->result_array()))
+            $this->template->error("Can't delete this question. Someone is using this question for his security.");;
+        $question = $this->security_model->get_question_by_id($id);
+        if($question->num_rows() == 0) {
+            $this->template->error("Invalid question");
+        }
+
+        $this->security_model->delete_question($id);
+        $this->session->set_flashdata("globalmsg", "The question was deleted");
+        redirect(site_url("admin/security_questions"));
+    }
+
 }
 
 ?>
