@@ -30,7 +30,7 @@ class Settings
 			 rotation_ad_alert_user, enable_promote_post, resize_avatar,
 			 verified_cost, enable_verified_buy, enable_verified_requests,
 			 public_profiles, public_pages, public_blogs, enable_blogs,
-			 limit_max_photos, limit_max_photos_post, enable_dislikes,
+			 limit_max_photos, limit_max_photos_post, limit_max_videos, limit_max_videos_post, enable_dislikes,
 			 google_maps_api_key, enable_google_maps, limit_words, limit_edits")
 		->where("ID", 1)
 		->get("site_settings");

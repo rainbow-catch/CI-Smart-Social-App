@@ -18,7 +18,7 @@
 <div class="panel-body">
 <?php echo form_open(site_url("admin/limits_pro"), array("class" => "form-horizontal")) ?>
 
-
+<!--Image limits-->
 <div class="form-group">
     <label for="name-in" class="col-sm-2 control-label"><?php echo lang("ctn_816") ?></label>
     <div class="col-sm-10">
@@ -33,6 +33,24 @@
       <span class="help-block"><?php echo lang("ctn_819") ?></span>
     </div>
 </div>
+
+<!--Video Limits-->
+<div class="form-group">
+    <label for="name-in" class="col-sm-2 control-label">Max Upload Videos</label>
+    <div class="col-sm-10">
+      <input type="text" id="name-in" class="form-control" name="limit_max_videos" value="<?php echo $this->settings->info->limit_max_videos ?>">
+      <span class="help-block">The max amount of videos any account can have uploaded. Set to 0 for unlimited.</span>
+    </div>
+</div>
+<div class="form-group">
+    <label for="name-in" class="col-sm-2 control-label">Max Upload Videos Per Post</label>
+    <div class="col-sm-10">
+      <input type="text" id="name-in" class="form-control" name="limit_max_videos_post" value="<?php echo $this->settings->info->limit_max_videos_post ?>">
+      <span class="help-block">The max amount of videos that can be uploaded to any single post. Set to 0 for unlimited.</span>
+    </div>
+</div>
+
+<!--Word & Edit Limits-->
 <div class="form-group">
     <label for="name-in" class="col-sm-2 control-label"><?php echo lang("ctn_853") ?></label>
     <div class="col-sm-10">

@@ -242,6 +242,8 @@ class Admin extends CI_Controller
 		}
 		$limit_max_photos = intval($this->input->post("limit_max_photos"));
 		$limit_max_photos_post = intval($this->input->post("limit_max_photos_post"));
+		$limit_max_videos = intval($this->input->post("limit_max_videos"));
+		$limit_max_videos_post = intval($this->input->post("limit_max_videos_post"));
 		$limit_words = intval($this->input->post("limit_words"));
 		$limit_edits = intval($this->input->post("limit_edits"));
 
@@ -249,6 +251,8 @@ class Admin extends CI_Controller
 			array(
 				"limit_max_photos" => $limit_max_photos,
 				"limit_max_photos_post" => $limit_max_photos_post,
+				"limit_max_videos" => $limit_max_videos,
+				"limit_max_videos_post" => $limit_max_videos_post,
 				"limit_words" => $limit_words,
 				"limit_edits" => $limit_edits
 			)
