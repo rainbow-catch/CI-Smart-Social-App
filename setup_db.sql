@@ -1097,7 +1097,7 @@ CREATE TABLE `users`  (
   `location_live` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `friends` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `pages` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `profile_view` int(11) NOT NULL,
+  `profile_view` int(11) NOT NULL DEFAULT 1,
   `posts_view` int(11) NOT NULL,
   `post_profile` int(11) NOT NULL,
   `allow_friends` int(11) NOT NULL,
