@@ -11,7 +11,7 @@
  Target Server Version : 100413
  File Encoding         : 65001
 
- Date: 29/01/2021 23:21:20
+ Date: 05/02/2021 00:14:40
 */
 
 SET NAMES utf8mb4;
@@ -57,6 +57,12 @@ CREATE TABLE `ci_sessions`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `ci_sessions_timestamp`(`timestamp`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ci_sessions
+-- ----------------------------
+INSERT INTO `ci_sessions` VALUES ('bmnk8vpbls5d33ha9t45q64suaubsm5l', '127.0.0.1', 1612458788, 0x5F5F63695F6C6173745F726567656E65726174657C693A313631323435383738383B);
+INSERT INTO `ci_sessions` VALUES ('k5g7htmsg1tvhu232kd647njt0i7ubr2', '127.0.0.1', 1612458811, 0x5F5F63695F6C6173745F726567656E65726174657C693A313631323435383738383B);
 
 -- ----------------------------
 -- Table structure for custom_fields
@@ -787,7 +793,7 @@ CREATE TABLE `site_settings`  (
 -- ----------------------------
 -- Records of site_settings
 -- ----------------------------
-INSERT INTO `site_settings` values (1, 'Social Network', 'Welcome to Social Network', '/home/public_html/uploads', 'uploads', 'test@test.com', 'logo.png', 0, 1, 'd/m/Y', 1, 'gif|png|jpg|jpeg', '', '', 0, '', '', '', '', 10028, '', 'USD', 1, '$', 0, 1, 1, 0, 5, 0, '', '', 0, '', '', 0, 'layout/themes/titan_layout.php', 1, 200, 200, 3600, '', '', 0, 0, 'Y/m/d H:i', 0, 0, 0, 0, 0, 1, 1, 1, 1, '5.40', 1, 1, 1, 1, 1, 1, 50, 8, 1, 0, '', 20, 3, 30, 3);
+INSERT INTO `site_settings` VALUES (1, 'Social Network', 'Welcome to Social Network', 'E://PROJECT2/OnGoingProject/conOrNotCon/Conspiracy-social-app/uploads', 'uploads', 'test@test.com', 'logo.png', 0, 1, 'd/m/Y', 1, 'gif|png|jpg|jpeg', '', '', 0, '', '', '', '', 10028, '', 'USD', 1, '$', 0, 0, 1, 0, 5, 0, '', '', 0, '', '', 0, 'layout/themes/titan_layout.php', 1, 200, 200, 3600, '', '', 0, 0, 'Y/m/d H:i', 0, 0, 0, 0, 0, 1, 1, 1, 1, 5.40, 1, 1, 1, 1, 1, 1, 50, 8, 1, 0, '', 20, 3, 30, 3);
 
 -- ----------------------------
 -- Table structure for user_albums
@@ -1115,7 +1121,12 @@ CREATE TABLE `users`  (
   `security_answer` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `security_answered` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO `users` VALUES (3, 'admin@gmail.com', '$2a$12$HMH8Pq5U4uIKiJSKrONeteVbvE3WrKYuJs4moGEGyEEgqJF8X5wbW', '1d0499e7cef8e4f5739b9ea6b96fc467', '127.0.0.1', 'admin', 'Admin', 'User', 'default.png', 1612458428, '2-2021', 1612458801, '', '', '', '', 1, '', 0.00, 0, 1, 0, 1, '', 1, 0, '', '', '', '', '', '', 0, 'default_header.png', '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for verified_requests
